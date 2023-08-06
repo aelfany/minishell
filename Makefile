@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/05/20 11:45:24 by abelfany          #+#    #+#              #https://www.youtube.com/watch?v=pW-4JUCTBtg
-#    Updated: 2023/07/18 15:13:22 by abelfany         ###   ########.fr        #
+#    Created: 2023/05/20 11:45:24 by abelfany          #+#    #+#              #
+#    Updated: 2023/08/06 15:07:41 by abelfany         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,8 @@ SRC = minishell.c \
 		 ft_split.c ./commands/export.c ./commands/unset.c\
 		exec_tools.c ft_strjoin.c init.c env.c ft_atoi.c exec_cmd.c\
 	 	./commands/cd.c ./commands/pwd.c  ./commands/echo.c check_cmd.c\
-	 	tools.c ./commands/exit.c ./commands/env.c pipes.c  pipe_exec.c pipe_close.c\
+	 	./commands/exit.c ./commands/env.c pipes.c  pipe_exec.c pipe_close.c\
+		redirection_expand.c red_input.c utils.c lst_gen.c cmd_and_quots.c checkers.c \
 
 S_OBJ = $(SRC:.c=.o)
 C_FLAG = -Wall -Wextra -Werror -fsanitize=address

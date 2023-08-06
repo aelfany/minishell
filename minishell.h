@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 10:09:43 by abelfany          #+#    #+#             */
-/*   Updated: 2023/07/29 16:46:18 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/06 18:43:14 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,7 @@
 #include <readline/history.h>
 
 /*-------------by abelfany 1-------------*/
-#define OPT 0
-#define CMD 0
-#define RDIN 0
-#define RDOUT 0
-#define TBLONIT
+
 typedef struct s_var
 {
     char    *str;
@@ -37,11 +33,21 @@ typedef struct s_var
 
 typedef struct s_cmd
 {
-    char    *s_cmd;
-    // char    **cmd;
-	int pipe;
-    struct s_env *next;
+    char    *cmd;
+    int     count;
+    char    *token;
+	int     heredoc;
+    struct s_cmd *next;
 } t_cmd;
+
+typedef struct s_creat
+{
+    char    *cmd;
+    char    *token;
+    char    **opt;
+    int     pipe;
+    struct s_creat *next;
+} t_creat;
 
 typedef struct s_garbage
 {
@@ -83,9 +89,22 @@ typedef struct s_env
 } t_env;
 
 /*-------------by abelfany 1-------------*/
-int     ft_cmp(char *s1, char *s2);
-char	*ft_strcpy(char *dest, char *src);
-char    *take_word(char *cmd);
+int			ft_isalpha(int c);
+int			ft_isascii(int c);
+int			ft_isprint(int c);
+int			ft_isspace(char c);
+int			skip_w_space(char *str);
+void		insert(t_creat **root, char *item, char *str);
+// char		*ft_strjoin(char const *s1, char const *s2);
+char		*ft_strdup(const char *s1);
+void		check_rederction(char *str, int *x, t_creat **res, char c);
+void		check_expand(char *str, int *x, t_creat **res);
+char		*_remallc(char *str, char c);
+void who_first(char *str, int *x, t_creat **res);
+void		quots_handler(char *str, int *x, t_creat **res);
+void		take_string(char *str, int *x, t_creat **res);
+int 		counter_quots(char *str);
+t_creat		*read_string(char *str);
 /*-------------by abelfany 2-------------*/
 // tool functions
 char	**ft_split(char const *s, char c);
