@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:59:47 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/06 19:11:29 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/08 16:17:11 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,19 +59,20 @@ void who_first(char *str, int *x, t_creat **res)
     int b = x[0];
     char flag;
     char *word;
+    
     flag = '\'';
     if (str[b] == '"')
         flag = '"';
-    else
     word = malloc(2);
     word[0] = 0;
     b++;
+    // printf("-> %c\n", str[b]);
     while (str[b] != flag && str[b])
     {
-        if (ft_isascii(str[b]))
-            word = _remallc(word, str[b]);
+        word = _remallc(word, str[b]);
         b++;
     }
+    // printf("-> %s\n", word);
     (*x) = b;
     if(flag == '\'')
         insert(res, word, "\033[0;32mSQ\033[0m");
@@ -112,13 +113,11 @@ void take_string(char *str, int *x, t_creat **res)
     word = malloc(2);
     word[0] = 0;
     b = x[0];
-    while (str[b] && ft_isalpha(str[b]))
+    while (str[b] && !ft_isspace(str[b]) && not(str[b]))
     {
-        if (ft_isalpha(str[b]))
-            word = _remallc(word, str[b]);
+        word = _remallc(word, str[b]);
         b++;
     }
     (*x) = b;
-    // printf("->> %s\n", word);
     insert(res, word, "\033[0;32mCMD\033[0m");
 }

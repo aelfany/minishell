@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 10:09:43 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/06 18:43:14 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/08 16:50:55 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-// #include "../libft/libft.h"
 #include <fcntl.h>
 #include <dirent.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 
 /*-------------by abelfany 1-------------*/
+
 
 typedef struct s_var
 {
@@ -105,6 +105,7 @@ void		quots_handler(char *str, int *x, t_creat **res);
 void		take_string(char *str, int *x, t_creat **res);
 int 		counter_quots(char *str);
 t_creat		*read_string(char *str);
+int 	not(char c);
 /*-------------by abelfany 2-------------*/
 // tool functions
 char	**ft_split(char const *s, char c);

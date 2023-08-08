@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 14:21:59 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/06 18:49:15 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/08 17:42:55 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	ft_isprint(int c)
 
 int	ft_isascii(int c)
 {
-	if (c >= 0 && c <= 127 && !ft_isspace(c))
+	if (c >= 0 && c <= 127)
 	    return (1);
 	return (0);
 }
