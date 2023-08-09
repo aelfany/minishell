@@ -77,7 +77,7 @@ void	ft_error(char *str)
 	exit(1);
 }
 
-void	exec_built_ins(int id, t_vars *var, t_env *envr)
+void	exec_built_ins(int id, t_vars *var, t_env **envr, int p_id)
 {
 	int	f_id;
 	int	fd;
@@ -95,48 +95,56 @@ void	exec_built_ins(int id, t_vars *var, t_env *envr)
 		}
 		dup2(0, fd);
 	}
-	if (id == 0)
-		cd(var);
-	else if (id == 1)
+	if (id == 0 && p_id == 0)
+		cd(var, envr);
+	else if (id == 1 && p_id == 0)
 		echo(var->cmd_options);
-	else if (id == 2)
-		pwd();
-	else if (id == 3)
+	else if (id == 2 && p_id == 0)
+		pwd(*envr);
+	else if (id == 3 && p_id == 0)
 		ft_export(envr, var);
-	else if (id == 4)
+	else if (id == 4 && p_id == 0)
+	{
 		unset(envr, var);
-	else if (id == 5)
-		ft_env(envr);
-	else if (id == 6)
-		ft_exit(var->exitcode, envr, var);
+		printf("%s\n", (*envr)->opt);
+	}
+	else if (id == 5 && p_id == 0)
+		ft_env(*envr);
+	else if (id == 6 && p_id == 0)
+		ft_exit(var->exitcode, *envr, var);
 	if (f_id == 0)
 	{
 		close(fd);
 		exit(0);
 	}
+	if (p_id == 0)
+		exit(0);
 }
 
-int	execute_cmd(t_vars *var, t_env *envr)
+int	execute_cmd(t_vars *var, t_env **envr)
 {
-	int	id;
-	int	pipe_id;
+	int		id;
+	int		pipe_id;
+	char	*path;
 
 	id = 0;
-	var->cmd = command_finder(var->line_read, getenv("PATH"));
-    var->cmd_options = ft_split(var->line_read, ' ');
 	pipe_id = 0;
+	path = ft_getenv(*envr, "PATH");
+	if (path != NULL)
+	{
+		var->cmd = command_finder(var->line_read, path);
+		var->cmd_options = ft_split(var->line_read, ' ');
+	}
 	pipe_id = check_pipes(var);
 	var->cmd_count = 2;
 	if	(pipe_id == 1)	// checks if pipe exists
 		pipes_exec(var);
+	int p_id = fork();
 	id =  check_built_ins(var);	// checks if builtins
 	if (id != -1 && pipe_id != 1)
-	{
-		printf("builtin\n");
-		exec_built_ins(id, var, envr);
-	}
-	
+		exec_built_ins(id, var, envr, p_id);
 	else if (id == -1 && pipe_id != 1) // checks if neither pipe or builtin
-		ft_exec(var);
+		ft_exec(var, p_id);
+	waitpid(-1, NULL, 0);
 	return (0);
 }

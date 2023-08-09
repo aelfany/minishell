@@ -1,27 +1,30 @@
 #include "minishell.h"
 
-void	ft_exec(t_vars *var)
+static void	ft_error_exec(t_vars *var)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(var->cmd, 2);
+	ft_putstr_fd(": No such file or directory\n", 2);
+}
+
+void	ft_exec(t_vars *var, int id)
 {
 	int	fd;
-	int id;
+	// int id;
 
 	fd = -1;
 	fd = ft_check_redirections(var);
-	// char **st = malloc(8 * 3);
-	// st[0] = "/usr/bin/grep";
-	// st[1] = "a";
-	// st[2] = NULL;
-	id = fork();
-	if (id == 0)
-	{
-		dup2(fd, 0);
-		close(fd);
-	}
+	// id = fork();
+	// if (id == 0)
+	// {
+	// 	dup2(fd, 0);
+	// 	close(fd);
+	// }
 	if (id == 0)
 	{
 		execve(var->cmd, var->cmd_options, var->envr);
-		perror(var->cmd);
+		ft_error_exec(var);
 		exit(1);
 	}
-	waitpid(-1, NULL, 0);
+	// waitpid(id, NULL, 0);
 }

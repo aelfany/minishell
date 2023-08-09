@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 14:19:37 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/06 17:25:27 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/09 20:43:06 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,36 @@ void check_rederction(char *str, int *x, t_creat **res, char c)
     word[0] = 0;
     b = x[0];
     b = b + skip_space(str+b+1)+1;
-    while (ft_isprint(str[b]) && str[b])
+    while (!ft_isspace(str[b]) && str[b] && not(str[b]))
     {
-        if (ft_isprint(str[b]))
-            word = _remallc(word, str[b]);
+        word = _remallc(word, str[b]);
         b++;
     }
     (*x) = b;
     if (c == '>')
-        insert(res, word, "\033[0;32mRDOUT\033[0m");
+        insert(res, word, "RDOUT");
     else
-        insert(res, word, "\033[0;32mRDIN\033[0m");
+        insert(res, word, "RDIN");
+}
+
+void rederction_apn(char *str, int *x, t_creat **res)
+{
+    int b;
+    char *word;
+
+    b = x[0];
+    word = malloc(2);
+    word[0] = 0;
+    b = x[0] + 2;
+    while(ft_isspace(str[b]))
+        b++;
+    while (str[b] && !ft_isspace(str[b]) && not(str[b]))
+    {
+        word = _remallc(word, str[b]);
+        b++;
+    }
+    (*x) = b;
+    insert(res, word, "RD_AP");
 }
 
 void check_expand(char *str, int *x, t_creat **res)

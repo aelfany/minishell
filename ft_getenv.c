@@ -1,45 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcpy.c                                        :+:      :+:    :+:   */
+/*   ft_getenv.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anchaouk <anchaouk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/27 17:32:47 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/06 13:18:28 by anchaouk         ###   ########.fr       */
+/*   Created: 2023/07/26 16:44:41 by anchaouk          #+#    #+#             */
+/*   Updated: 2023/08/04 15:40:11 by anchaouk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_strcpy(char *dest, char *src)
+char	*ft_getenv(t_env *envr, char *var)
 {
-	int	a;
+	t_env	*ptr;
 
-	a = 0;
-	while (src[a] != '\0')
+	ptr = envr;
+	while(ptr)
 	{
-		dest[a] = src[a];
-		a++;
+		if (ft_strcmp(ptr->opt, var) == 0)
+			return (ptr->envr);
+		ptr = ptr->next;
 	}
-	dest[a] = '\0';
-	return (dest);
-}
-
-char	*ft_strcpy_malloc(char *dest, char *src)
-{
-	int	a;
-
-	a = 0;
-	while(src[a])
-		a++;
-	dest = malloc(sizeof(char) * a + 1);
-	a = 0;
-	while (src[a] != '\0')
-	{
-		dest[a] = src[a];
-		a++;
-	}
-	dest[a] = '\0';
-	return (dest);
+	return (0);
 }

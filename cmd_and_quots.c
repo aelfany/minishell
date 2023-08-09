@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:59:47 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/08 16:17:11 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/09 20:42:43 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,18 +66,16 @@ void who_first(char *str, int *x, t_creat **res)
     word = malloc(2);
     word[0] = 0;
     b++;
-    // printf("-> %c\n", str[b]);
     while (str[b] != flag && str[b])
     {
         word = _remallc(word, str[b]);
         b++;
     }
-    // printf("-> %s\n", word);
-    (*x) = b;
+    (*x) = b+1;
     if(flag == '\'')
-        insert(res, word, "\033[0;32mSQ\033[0m");
+        insert(res, word, "SQ");
     else 
-        insert(res, word, "\033[0;32mDQ\033[0m");
+        insert(res, word, "DQ");
 }
 // void quots_handler(char *str, int *x, t_creat **res)
 // {
@@ -119,5 +117,5 @@ void take_string(char *str, int *x, t_creat **res)
         b++;
     }
     (*x) = b;
-    insert(res, word, "\033[0;32mCMD\033[0m");
+    insert(res, word, "CMD");
 }
