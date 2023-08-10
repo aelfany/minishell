@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:59:47 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/09 20:42:43 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/10 20:12:17 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,17 +103,43 @@ void who_first(char *str, int *x, t_creat **res)
 //     (*x) = b - 1;
 // }
 
+// void take_string(char *str, int *x, t_creat **res)
+// {
+//     int b;
+//     char *word;
+
+//     word = malloc(2);
+//     word[0] = 0;
+//     b = x[0];
+//     while (str[b] && !ft_isspace(str[b]) && not(str[b]))
+//     {
+//         word = _remallc(word, str[b]);
+//         b++;
+//     }
+//     (*x) = b;
+//     insert(res, word, "CMD");
+// }
+// void rederction_apn(char *str, int *x, t_creat **res)
 void take_string(char *str, int *x, t_creat **res)
 {
     int b;
+    char flag;
     char *word;
-
+    char *join;
+    
     word = malloc(2);
     word[0] = 0;
     b = x[0];
-    while (str[b] && !ft_isspace(str[b]) && not(str[b]))
+    while (str[b] && !ft_isspace(str[b]))
     {
-        word = _remallc(word, str[b]);
+        if ((str[b] != '"' && str[b] != '\''))
+           word = _remallc(word, str[b]);
+        else
+        {
+            flag = str[b];
+            join = quts(str, &b);
+            word = ft_strjoin(word, join);
+        }
         b++;
     }
     (*x) = b;

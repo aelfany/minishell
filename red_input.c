@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 14:20:31 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/09 21:41:44 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/10 20:05:36 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ int find_last(char *str, int *flag, char c)
 
     a = 1;
     int f = 0;
-    while(str[a])
+    while (str[a])
     {
-        if(str[a] == c)
+        if (str[a] == c)
         {
             f = 1;
             break;
@@ -28,7 +28,7 @@ int find_last(char *str, int *flag, char c)
         a++;
     }
     (*flag) = f;
-    return a;
+    return (a);
 }
 int counter_quots(char *str)
 {
@@ -36,38 +36,76 @@ int counter_quots(char *str)
     int flag;
     
     b = 0;
-    while(str[b])
+    while (str[b])
     {
-        if(str[b] == '"' || str[b] == '\'')
+        if (str[b] == '"' || str[b] == '\'')
         {
             b += find_last(str+b, &flag, str[b]);
-            if(flag == 0)
-                return 1;
+            if (flag == 0)
+                return (1);
         }
         b++;
     }
-    return 0;
+    return (0);
 }
 
-
-void check_heredoc(char *str, int *x, t_creat **res)
+char *quts(char *str, int *x)
 {
-    int b;
+    int b = x[0];
+    char flag;
     char *word;
-
-    b = x[0];
+    
+    flag = '\'';
+    if (str[b] == '"')
+        flag = '"';
     word = malloc(2);
     word[0] = 0;
-    b = x[0] + 2;
-    while(ft_isspace(str[b]))
-        b++;
-    while (str[b] && !ft_isspace(str[b]) && not(str[b]))
+    b++;
+    while (str[b] != flag && str[b])
     {
         word = _remallc(word, str[b]);
         b++;
     }
     (*x) = b;
-    insert(res, word, "HRD");
+    return (word);  
+}
+
+void add_back_token(t_creat **res, char *word, char flag)
+{
+    if (flag == '\'')
+        insert(res, word, "HRD_SQ");
+    else if (flag == '"')
+        insert(res, word, "HRD_DQ");
+    else if (flag == ' ')
+        insert(res, word, "HRD");
+}
+
+void check_heredoc(char *str, int *x, t_creat **res)
+{
+    int b;
+    char flag;
+    char *word;
+    char *join;
+    
+    word = malloc(2);
+    word[0] = 0;
+    b = x[0] + 2;
+    while (ft_isspace(str[b]))
+        b++;
+    while (str[b] && !ft_isspace(str[b]))
+    {
+        if ((str[b] != '"' && str[b] != '\''))
+           word = _remallc(word, str[b]);
+        else
+        {
+            flag = str[b];
+            join = quts(str, &b);
+            word = ft_strjoin(word, join);
+        }
+        b++;
+    }
+    (*x) = b;
+    add_back_token(res, word, flag);
 }
 
 t_creat *read_string(char *str, t_env *envr)
@@ -101,18 +139,15 @@ t_creat *read_string(char *str, t_env *envr)
             check_rederction(str, &x, &res, '<');
         if (str[x] == '|')
             insert(&res, "|", "PIP");
-        if(ft_isspace(str[x]))
-        {
-            x += skip_w_space(str+x) - 1;
-            insert(&res, " ", "SP");
-        }
-        if(!str[x])
+        // if (ft_isspace(str[x]))
+        // {
+        //     x += skip_w_space(str+x) - 1;
+        //     insert(&res, " ", "SP");
+        // }
+        if (!str[x])
             break;
-        if(ft_isspace(str[x]) || str[x] == '$' || str[x] == '|')
+        if (ft_isspace(str[x]) || str[x] == '$' || str[x] == '|')
             x++;
     }
     return (append(res));
 }
-        // printf("->>> %c\n", str[x]);
-        // printf("->>> %d\n", x);
-        // printf("->>> %d %c\n", x, str[x]);

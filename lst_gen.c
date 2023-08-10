@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 16:42:58 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/09 22:02:11 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/10 14:47:22 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,38 @@ t_creat *new_list(t_creat *res, int x)
 	}
 	return list;
 }
+
+// t_creat *append_helper(t_creat **tok, t_creat *res)
+// {
+// 	int count;
+// 	t_creat *list;
+// 	t_creat *tok;
+
+// 	count = 0;
+// 	list = (*tok);
+// 	tok = NULL;
+// 	while(tok)
+// 	{
+// 		if(!ft_strcmp((*tok) -> token, "CMD") ||
+// 			!ft_strcmp((*tok) -> token, "DQ") || 
+// 				!ft_strcmp((*tok) -> token, "SQ"))
+// 			count++;
+// 		(*tok) = (*tok) -> next;
+// 	}
+// 	tok = new_list(list, count);
+// 	(*tok) = list;
+// 	while((*tok))
+// 	{
+// 		if(ft_strcmp((*tok) -> token, "CMD") 
+// 		&& ft_strcmp((*tok) -> token, "DQ") 
+// 		&& ft_strcmp((*tok) -> token, "SP")
+// 		&& ft_strcmp((*tok) -> token, "SQ"))
+// 			insert(&tok, (*tok) -> cmd, (*tok) -> token);
+// 		(*tok) = (*tok) -> next;
+// 	}
+// 	return tok;
+// }
+
 t_creat *append(t_creat *res)
 {
 	int count;
@@ -208,3 +240,8 @@ t_creat *append(t_creat *res)
 	}
 	return tok;
 }
+
+// t_creat *append(t_creat *res)
+// {
+	
+// }

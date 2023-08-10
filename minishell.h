@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 10:09:43 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/09 22:10:54 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/10 17:57:37 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,12 @@ typedef struct s_cmd
 
 typedef struct s_creat
 {
-    char    *cmd;
-    char    *token;
-	int     count;
-    char    **opt;
-    int     pipe;
+    char		*cmd;
+    char		*token;
+	int			count;
+    char		**opt;
+    int			pipe;
+    struct s_creat *pon;
     struct s_creat *next;
 } t_creat;
 /*-------------by abelfany 1-------------*/
@@ -107,6 +108,7 @@ int			ft_isspace(char c);
 void 		error_handler(void);
 t_creat		*append(t_creat *res);
 int			skip_w_space(char *str);
+char		*quts(char *str, int *x);
 int 		counter_quots(char *str);
 char		*ft_strdup(const char *s1);
 int			counter(char *str, char c);
@@ -118,57 +120,57 @@ void		take_string(char *str, int *x, t_creat **res);
 void		check_expand(char *str, int *x, t_creat **res);
 void		quots_handler(char *str, int *x, t_creat **res);
 void 		rederction_apn(char *str, int *x, t_creat **res);
+void		add_back_token(t_creat **res, char *word, char flag);
 void		check_rederction(char *str, int *x, t_creat **res, char c);
 /*-------------by abelfany 2-------------*/
 // tool functions
-char	**ft_split(char const *s, char c);
-char	*ft_strjoin(char const *s1, char const *s2);
-char	*ft_itoa(int n);
-char	*ft_strcpy_malloc(char *dest, char *src);
-int		ft_strlen(const char *str);
-int		ft_strlen_delim(char *str, char delim);
-int		ft_strcmp(char *s1, char *s2);
-// int		ft_cmp(const char *s1, const char *s2);
-int		ft_atoi(const char *str);
-int		calc_size(char *str, char delim);
-void	ft_putstr_fd(char *str, int fd);
-void	fill_env(t_env **envr, char **env); //fills up the env variable in vars struct
-void	ft_fillup(t_env *str, char *env); // fills up the opt variable aka env id
-void	ft_fillup_envr(t_env *str, char *env); // fills up the envr varibale aka whats after the = equal sign
-char	*ft_getenv(t_env *envr, char *var); //finds the env in the env list i made
-char	*my_get_env(t_env *envr, char *id); //finds an env var return its value else NULL
-// exec functions
-char	**path_finder(char **env);
-char	*command_finder(char *cmd, char *env);
-void	ft_error(char *str);
-int		execute_cmd(t_vars *var, t_env **envr);
-int		check_built_ins(t_vars *var);
-void	init_vars(t_vars *var, char **env); //inits the vars struct
+char		*ft_itoa(int n);
+int			ft_atoi(const char *str);
+int			ft_strlen(const char *str);
+int			ft_strcmp(char *s1, char *s2);
+void		ft_putstr_fd(char *str, int fd);
+int			calc_size(char *str, char delim);
+void		ft_fillup(t_env *str, char *env); // fills up the opt variable aka env id
+char		**ft_split(char const *s, char c);
+void		fill_env(t_env **envr, char **env); //fills up the env variable in vars struct
+char		*ft_getenv(t_env *envr, char *var); //finds the env in the env list i made
+char		*my_get_env(t_env *envr, char *id); //finds an env var return its value else NULL
+void		ft_fillup_envr(t_env *str, char *env); // fills up the envr varibale aka whats after the = equal sign
+int			ft_strlen_delim(char *str, char delim);
+char		*ft_strcpy_malloc(char *dest, char *src);
+char		*ft_strjoin(char const *s1, char const *s2);
+// execfunctions
+void		ft_error(char *str);
+char		**path_finder(char **env);
+int			check_built_ins(t_vars *var);
+void		init_vars(t_vars *var, char **env); //inits the vars struct
+char		*command_finder(char *cmd, char *env);
+int			execute_cmd(t_vars *var, t_env **envr);
 // commands
-int 	cd(t_vars *var, t_env **envr);
-int		pwd(t_env *envr);
-int		echo(char **opt);
-int		ft_exit(int	exitcode, t_env *env, t_vars *var);
-void	ft_env(t_env *envr);
-void	ft_export(t_env **envr, t_vars *var);
-void	unset(t_env **envr, t_vars *var);
-void	ft_exec(t_vars *var, int id);
+int			pwd(t_env *envr);
+int			echo(char **opt);
+void		ft_env(t_env *envr);
+void		ft_exec(t_vars *var, int id);
+int 		cd(t_vars *var, t_env **envr);
+void		unset(t_env **envr, t_vars *var);
+void		ft_export(t_env **envr, t_vars *var);
+int			ft_exit(int	exitcode, t_env *env, t_vars *var);
 // export functions
-void	print_env(t_env *envr);
-int		ft_export_parser(char *env, int n);
-int		ft_count_vars(char **env);
+void		print_env(t_env *envr);
+int			ft_count_vars(char **env);
+int			ft_export_parser(char *env, int n);
 // pipe functions
-void	ft_pipe(t_vars *var);
-void	pipe_calc(t_vars *var);
-void	ft_execone(int	*end, t_vars *var);
-void	ft_execpipe(int *end1, int *end0, t_vars *var);
-void	ft_exectwo(int *end, t_vars *var);
-void	ft_close_first(int end[][2],t_vars *var);
-void	ft_close_last(int end[][2], t_vars *var);
-void	ft_close_pipe(int end[][2], t_vars *var);
-int		check_pipes(t_vars *var);
-int		pipes_exec(t_vars *var);
-void	ft_close_all(t_vars *var);
+void		ft_pipe(t_vars *var);
+void		pipe_calc(t_vars *var);
+int			pipes_exec(t_vars *var);
+int			check_pipes(t_vars *var);
+void		ft_close_all(t_vars *var);
+void		ft_execone(int	*end, t_vars *var);
+void		ft_exectwo(int *end, t_vars *var);
+void		ft_close_first(int end[][2],t_vars *var);
+void		ft_close_last(int end[][2], t_vars *var);
+void		ft_close_pipe(int end[][2], t_vars *var);
+void		ft_execpipe(int *end1, int *end0, t_vars *var);
 // checking functions
 int	ft_check_redirections(t_vars *var);
 #endif
