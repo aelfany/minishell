@@ -6,11 +6,12 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:59:47 by abelfany          #+#    #+#             */
-/*   Updated: 2023/07/19 14:40:00 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/12 20:34:53 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 char *_remallc(char *str, char c)
 {
     char *save;
@@ -29,6 +30,7 @@ char *_remallc(char *str, char c)
     }
     return (str);
 }
+
 int flag_fun(char *str, char x)
 {
     while (*str)

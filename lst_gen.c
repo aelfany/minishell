@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 16:42:58 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/10 14:47:22 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/12 17:35:49 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,7 @@ t_creat	*ft_lstnew(int x)
 	hel -> next = NULL;
 	return (hel);
 }
+
 t_creat *new_list(t_creat *res, int x)
 {
 	int a;
@@ -245,3 +246,10 @@ t_creat *append(t_creat *res)
 // {
 	
 // }
+
+// CMD = COMMOND OR WORD
+// SQ = SINGLE QUOTS
+// DQ = DOUBLE QUOTS
+// HRD = NORMAL DELEMITER
+// HRD_SQ = HEREDOC DELEMITER WITH DOUBLE QUOTS 
+// HRD_DQ = HEREDOC DELEMITER WITH SINGLE QUOTS

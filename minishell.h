@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 10:09:43 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/10 17:57:37 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/14 19:42:52 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,11 @@
 
 typedef struct s_var
 {
-    char    *str;
-    int     save;
+    int b;
+    int count;
+    char flag;
+    char *word;
+    char *join;
 } t_var;
 
 
@@ -93,35 +96,42 @@ typedef struct s_creat
 	int			count;
     char		**opt;
     int			pipe;
-    struct s_creat *pon;
-    struct s_creat *next;
+    struct		s_creat *pon;
+    struct		s_creat *next;
 } t_creat;
 /*-------------by abelfany 1-------------*/
-// int     ft_cmp(char *s1, char *s2);
-// char	*ft_strcpy(char *dest, char *src);
-// char    *take_word(char *cmd);
-int			not(char c);
+
+// void		quots_handler(char *str, int *x, t_creat **res);
+// char		*ft_strcpy(char *dest, char *src);
+// int		ft_cmp(char *s1, char *s2);
+// char		*take_word(char *cmd);
+int			not(char c); // in extention.c file
+int 		not_2(char c);
 int			ft_isalpha(int c);
 int			ft_isascii(int c);
 int			ft_isprint(int c);
 int			ft_isspace(char c);
-void 		error_handler(void);
+void		error_hh(char *str);
+void 		error_handler(void); 
 t_creat		*append(t_creat *res);
 int			skip_w_space(char *str);
-char		*quts(char *str, int *x);
 int 		counter_quots(char *str);
 char		*ft_strdup(const char *s1);
 int			counter(char *str, char c);
 char		*_remallc(char *str, char c);
 t_creat		*read_string(char *str, t_env *envr);
-void 		who_first(char *str, int *x, t_creat **res);
+char		*quts(char *str, int *x);
+char		*expand(t_env *env, int count, char *word);
+void 		who_first(char *str, int *x, t_creat **res, t_env *env);
+void		take_string(char *str, int *x, t_creat **res, t_env *env);
 void		insert(t_creat **root, char *item, char *str);
-void		take_string(char *str, int *x, t_creat **res);
-void		check_expand(char *str, int *x, t_creat **res);
-void		quots_handler(char *str, int *x, t_creat **res);
-void 		rederction_apn(char *str, int *x, t_creat **res);
+char		*check_expand_rd(char *str, int *x, t_env *env);
 void		add_back_token(t_creat **res, char *word, char flag);
-void		check_rederction(char *str, int *x, t_creat **res, char c);
+void		check_expand(char *str, int *x, t_creat **res, t_env *env);
+void 		check_expand(char *str, int *x, t_creat **res, t_env *env);
+void		rederction_apn(char *str, int *x, t_creat **res, t_env *env);
+void		check_rederction(char *str, int *x, t_creat **res, char c, t_env *env);
+
 /*-------------by abelfany 2-------------*/
 // tool functions
 char		*ft_itoa(int n);

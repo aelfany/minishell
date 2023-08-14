@@ -62,7 +62,6 @@ void	ft_close_pipe(int end[][2], t_vars *var)
 		}
 		d++;
 	}
-	// printf("finish %d\n", var->i);
 	ft_execpipe(var->pipe[var->i], var->pipe[var->i - 1], var);
 }
 

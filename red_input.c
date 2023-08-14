@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 14:20:31 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/10 20:05:36 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/14 21:43:58 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ char *quts(char *str, int *x)
     int b = x[0];
     char flag;
     char *word;
+    // char *join;
     
     flag = '\'';
     if (str[b] == '"')
@@ -61,14 +62,48 @@ char *quts(char *str, int *x)
     word = malloc(2);
     word[0] = 0;
     b++;
-    while (str[b] != flag && str[b])
+    while (str[b] != flag && str[b] && not_2(str[b]))
     {
+        // if(str[b] == '$')
+        // {
+        //     join = check_expand_rd(str, &b);
+        //     word = ft_strjoin(word, join);
+        // }
         word = _remallc(word, str[b]);
         b++;
     }
     (*x) = b;
+    // printf("%s\n", word);
     return (word);  
 }
+
+// char *qt_expand(char *str, int *x, t_env *env)
+// {
+//     int b = x[0];
+//     char flag;
+//     char *word;
+//     char *join;
+    
+//     flag = '\'';
+//     if (str[b] == '"')
+//         flag = '"';
+//     word = malloc(2);
+//     word[0] = 0;
+//     b++;
+//     while (str[b] != flag && str[b] && not_2(str[b]))
+//     {
+//         if(str[b] == '$')
+//         {
+//             join = check_expand(str, &b, env);
+//             word = ft_strjoin(word, join);
+//         }
+//         word = _remallc(word, str[b]);
+//         b++;
+//     }
+//     (*x) = b;
+//     // printf("%s\n", word);
+//     return (word);  
+// }
 
 void add_back_token(t_creat **res, char *word, char flag)
 {
@@ -78,34 +113,48 @@ void add_back_token(t_creat **res, char *word, char flag)
         insert(res, word, "HRD_DQ");
     else if (flag == ' ')
         insert(res, word, "HRD");
+    // free(word);
 }
 
-void check_heredoc(char *str, int *x, t_creat **res)
+int not_2(char c)
 {
-    int b;
-    char flag;
-    char *word;
-    char *join;
+    if(c == '|' || c == '<' || c == '>')
+        return (0);
+    return (1);
+}
+
+void check_heredoc(char *str, int *x, t_creat **res, t_env *env)
+{
+    t_var u;
     
-    word = malloc(2);
-    word[0] = 0;
-    b = x[0] + 2;
-    while (ft_isspace(str[b]))
-        b++;
-    while (str[b] && !ft_isspace(str[b]))
+    (void)env;
+    u.flag = ' ';
+    u.word = malloc(2);
+    u.word[0] = 0;
+    u.b = x[0] + 2;
+    while (ft_isspace(str[u.b]))
+        u.b++;
+    u.count = u.b;
+    while (str[u.count] == '$')
+        u.count++;
+    u.count -= u.b;
+    while (str[u.b] && !ft_isspace(str[u.b]) && not_2(str[u.b]))
     {
-        if ((str[b] != '"' && str[b] != '\''))
-           word = _remallc(word, str[b]);
+        if (str[u.b] == '$' && (str[u.b + 1] == '"' \
+        || str[u.b + 1] == '\'') && u.count % 2)
+            u.b++;
+        if ((str[u.b] != '"' && str[u.b] != '\''))
+           u.word = _remallc(u.word, str[u.b]);
         else
         {
-            flag = str[b];
-            join = quts(str, &b);
-            word = ft_strjoin(word, join);
+            u.flag = str[u.b];
+            u.join = quts(str, &u.b);
+            u.word = ft_strjoin(u.word, u.join);
         }
-        b++;
+        u.b++;
     }
-    (*x) = b;
-    add_back_token(res, word, flag);
+    (*x) = u.b;
+    add_back_token(res, u.word, u.flag);
 }
 
 t_creat *read_string(char *str, t_env *envr)
@@ -126,28 +175,32 @@ t_creat *read_string(char *str, t_env *envr)
             break ;
         }
         if (not(str[x]))
-            take_string(str, &x, &res);
+            take_string(str, &x, &res, envr);
         if (!counter_quots(str) && (str[x] == '\'' || str[x] == '"'))
-            who_first(str, &x, &res);
+            who_first(str, &x, &res, envr);
         if (str[x] == '<' && str[x + 1] == '<')
-            check_heredoc(str, &x, &res);
+            check_heredoc(str, &x, &res, envr);
         if (str[x] == '>' && str[x + 1] == '>')
-            rederction_apn(str, &x, &res);
-        if (str[x] == '>')
-            check_rederction(str, &x, &res, '>');
-        if (str[x] == '<')
-            check_rederction(str, &x, &res, '<');
+            rederction_apn(str, &x, &res, envr);
+        if (str[x] == '>' && str[x + 1] != '>')
+            check_rederction(str, &x, &res, '>', envr);
+        if (str[x] == '<' && str[x + 1] != '<')
+            check_rederction(str, &x, &res, '<', envr);
         if (str[x] == '|')
             insert(&res, "|", "PIP");
+        if (str[x] == '$')
+            check_expand(str, &x, &res, envr);
         // if (ft_isspace(str[x]))
         // {
         //     x += skip_w_space(str+x) - 1;
         //     insert(&res, " ", "SP");
         // }
+        printf("->> %c\n", str[x]);
         if (!str[x])
             break;
-        if (ft_isspace(str[x]) || str[x] == '$' || str[x] == '|')
+        if ((ft_isspace(str[x]) || str[x] == '|'))
             x++;
+        printf("%c\n", str[x]);
     }
     return (append(res));
 }
