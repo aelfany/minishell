@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 14:20:31 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/14 21:43:58 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/16 07:50:37 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,14 @@ void check_heredoc(char *str, int *x, t_creat **res, t_env *env)
     add_back_token(res, u.word, u.flag);
 }
 
+int not_red(char c)
+{
+    if(c == '\'' || c == '"' || c == '|'||c == '<' 
+        || c == '>' || c == '$')
+        return (0);
+    return (1);
+}
+
 t_creat *read_string(char *str, t_env *envr)
 {
     t_creat *res;
@@ -189,18 +197,18 @@ t_creat *read_string(char *str, t_env *envr)
         if (str[x] == '|')
             insert(&res, "|", "PIP");
         if (str[x] == '$')
-            check_expand(str, &x, &res, envr);
+            check_expand(str+x, &x, &res, envr);
         // if (ft_isspace(str[x]))
         // {
         //     x += skip_w_space(str+x) - 1;
         //     insert(&res, " ", "SP");
         // }
-        printf("->> %c\n", str[x]);
+        // printf("->> %c\n", str[x]);
         if (!str[x])
             break;
-        if ((ft_isspace(str[x]) || str[x] == '|'))
+        if (not_red(str[x]) || ft_isspace(str[x]))
             x++;
-        printf("%c\n", str[x]);
+        // printf("%c\n", str[x]);
     }
     return (append(res));
 }

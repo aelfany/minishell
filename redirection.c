@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 14:19:37 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/14 19:43:07 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/16 07:50:25 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@
 //     (*x) = b;
 //     insert(res, word, "RD_AP");
 // }
+
 int skip_space(char *str)
 {
     int a;
