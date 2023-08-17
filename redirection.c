@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 14:19:37 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/16 07:50:25 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/17 15:52:34 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void check_rederction(char *str, int *x, t_creat **res, char c, t_env *env)
            word = _remallc(word, str[b++]);
         if(str[b] && !ft_isspace(str[b]) && not_2(str[b]))
         {
-            join = quts(str, &b);
+            join = quts(str, &b, env);
             word = ft_strjoin(word, join);
         }
         if(!str[b] || ft_isspace(str[b]) || !not_2(str[b]))
@@ -117,16 +117,16 @@ void rederction_apn(char *str, int *x, t_creat **res, t_env *env)
         b++;
     while (str[b] && !ft_isspace(str[b]) && not_2(str[b]))
     {
-        if(str[b] == '$')
-        {
-            join = check_expand_rd(str, &b, env);
-            word = ft_strjoin(word, join);
-        }
+        // if(str[b] == '$')
+        // {
+        //     join = check_expand_rd(str, &b, env);
+        //     word = ft_strjoin(word, join);
+        // }
         if ((str[b] != '"' && str[b] != '\'') && not(str[b]))
            word = _remallc(word, str[b]);
         else
         {
-            join = quts(str, &b);
+            join = quts(str, &b, env);
             word = ft_strjoin(word, join);
         }
             if(!str[b])

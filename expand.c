@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 22:34:23 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/16 06:44:18 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/17 18:42:27 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int check_expand_cases(char *str, int x)
         return (1);
     return 0;
 }
-
 
 char *expand(t_env *env, int count, char *word)
 {
@@ -52,94 +51,7 @@ void error_hh(char *str)
     exit(0);
 }
 
-char *check_expand_rd(char *str, int *x, t_env *env)
-{
-    int a;
-    char *word;
-    int count;
-    
-    word = malloc(2);
-    word[0] = 0;
-    count = 0;
-    a = x[0] - 1;
-    while (str[++a] == '$')
-        count++;
-    // if (check_expand_cases(str, a-1))
-    //     error_hh("Error: $*: ambiguous redirect\n");
-    a--;
-    while (str[++a] && !ft_isspace(str[a]) && not(str[a]))
-        word = _remallc(word, str[a]);
-    word = expand(env, count, word);
-    (*x) = a;
-    return word;
-}
-
-// creat function check
-// char *rmalloc(char *str, int len, int add)
-// {
-//     char *re;
-
-//     while(str)
-//     {
-        
-//     }
-// }
-
-long long deff(long long a, long long b)
-{
-    if (a > b)
-        return (a - b);
-    return (b - a);
-}
-
-char *expand_inside_dq(char *str, int *x, t_env *env)
-{
-    int a;
-    int b;
-    int y;
-    int count;
-
-    a = x[0] - 1;
-    count = 0;
-    while (str[++a] == '$')
-        count++;
-    b = ft_strlen(env -> envr);
-    y = ft_strlen(str);
-    y = deff(b, y);
-    return (str);
-}
-
-char *take_expand_word(char *str, int *x, t_env *env)
-{
-    int b;
-    char *word;
-    int count;
-    static int lenght;
-
-    word = malloc(2);
-    word[0] = 0;
-    count = 0;
-    b = x[0] - 1;
-    while(str[++b] == '$')
-        count++;
-    while (str[b] && not(str[b]))
-    {
-        lenght++;
-        word = _remallc(word, str[b++]);
-    }
-    word = expand(env, count, word);
-    (*x) = b;
-    return word;
-}
-
-int is_yes(char c)
-{
-    if(c == '|' || c == '<' || c == '>' || ft_isspace(c))
-        return (1);
-    return (0);
-}
-
-char *quots_expand(char *str, int *x)
+char *quots_expand(char *str, int *x, t_env *env)
 {
     int b = x[0];
     char flag;
@@ -155,16 +67,154 @@ char *quots_expand(char *str, int *x)
     {
         if(str[b] == '"' || str[b] == '\'')
         {
-            join = quts(str, &b);
+            join = quts(str, &b, env);
             word = ft_strjoin(word, join);
         }
-        if(!str[b] || !not_2(str[b]))
+        else
+            word = _remallc(word, str[b++]);
+        if(!str[b] || !not_2(str[b]) || str[b] == '$' || ft_isspace(str[b]))
             break ;
         b++;
     }
     (*x) = b;
     return word;
 }
+
+int is_yes(char c)
+{
+    if(c == '|' || c == '<' || c == '>' || ft_isspace(c))
+        return (1);
+    return (0);
+}
+char	*check_expand_rd(char *str, int *x, t_env *env)
+{
+    int a;
+    char *word;
+    char *join;
+
+    a = x[0];
+    word = 0;
+    // printf("->>> %s\n", str+a);
+    while(str[a])
+    {
+        if(is_yes(str[a]))
+            break;
+        if(str[a] == '"' || str[a] == '\'')
+        {
+            join = quots_expand(str, &a, env);
+            word = ft_strjoin(word, join);
+        }
+        if(str[a] == '$')
+        {
+            join = take_expand_word(str, &a, env);
+            word = ft_strjoin(word, join);
+        }
+    }
+    (*x) = a;
+    return word;
+}
+
+// char *remove_qt(char *str)
+// {
+//     int b;
+//     char flag;
+//     char *word;
+    
+//     flag = '\'';
+//     b = 0;
+//     if (str[b] == '"')
+//         flag = '"';
+//     word = malloc(2);
+//     word[0] = 0;
+//     b++;
+//     while (str[b] != flag && str[b] && not_2(str[b]))
+//     {
+//         word = _remallc(word, str[b]);
+//         if(!str[b])
+//             break ;
+//         b++;
+//     }
+//     (*x) = b;
+//     return (word);  
+// }
+
+char *overwrite(char *qt, char *str, char *word, int size)
+{
+    char *over;
+    int a;
+
+    a = 0;
+    (void)word;
+    (void)qt;
+    over = malloc((ft_strlen(str) + size + 1) * sizeof(char));
+    return str;
+}
+
+long long deff(long long a, long long b)
+{
+    if (a >= b)
+        return (a - b);
+    return (b * -1);
+}
+
+char *expand_inside_dq(char *str, int *x, t_env *env)
+{
+    puts("------");
+    int a;
+    int b;
+    int y;
+    int start;
+    char *word;
+    char *qt;
+
+    a = x[0];
+    start = a;
+    qt = 0;
+    word = check_expand_rd(str, &a, env);
+    y = ft_strlen(word);
+    b = a - start;
+    y = deff(y, b);
+    b = a;
+    qt = quts(str, &a, env);
+    printf("->>> %s\n", qt);
+    a = b;
+    word = overwrite(qt, str, word, y);
+    (*x) = a;
+    return (str);
+}
+
+int	ft_isdigit(int c)
+{
+	if (c >= 48 && c <= 57)
+		return (1);
+	return (0);
+}
+
+int if_expand(char c)
+{
+    if(c == '-' || c == '*' || ft_isdigit(c) || ft_isspace(c))
+        return (1);
+    return (0);
+}
+char *take_expand_word(char *str, int *x, t_env *env)
+{
+    int b;
+    char *word;
+    int count;
+
+    word = malloc(2);
+    word[0] = 0;
+    count = 0;
+    b = x[0] - 1;
+    while(str[++b] == '$')
+        count++;
+    while (str[b] && not(str[b]))
+        word = _remallc(word, str[b++]);
+    word = expand(env, count, word);
+    (*x) = b;
+    return word;
+}
+
 
 void check_expand(char *str, int *x, t_creat **res, t_env *env)
 {
@@ -179,7 +229,7 @@ void check_expand(char *str, int *x, t_creat **res, t_env *env)
             break;
         if(str[a] == '"' || str[a] == '\'')
         {
-            join = quots_expand(str, &a);
+            join = quots_expand(str, &a, env);
             word = ft_strjoin(word, join);
         }
         if(str[a] == '$')
@@ -191,34 +241,3 @@ void check_expand(char *str, int *x, t_creat **res, t_env *env)
     (*x) = a;
     insert(res, word, "CMD");
 }
-// c == '\'' || c == '"'
-// char	*ff_ft(char *s1, char const *s2)
-// {
-// 	size_t	i;
-// 	size_t	lenres;
-// 	char	*alloc;
-//     free(s1);
-
-// 	if (!s2)
-// 		return (0);
-// 	i = 0;
-//     s1[0] = 0;
-// 	lenres = ft_strlen(s1);
-// 	alloc = (char *)malloc(sizeof(char) * (lenres + ft_strlen(s2) + 1));
-// 	if (!alloc)
-// 		return (0);
-// 	while (i < lenres && s1[i] != '\0')
-// 	{
-// 		alloc[i] = s1[i];
-// 		i++;
-// 	}
-// 	i = 0;
-// 	while (i <= lenres && s2[i] != '\0')
-// 	{
-// 			alloc[lenres] = s2[i];
-// 			lenres++;
-// 			i++;
-// 	}
-// 	alloc[lenres] = '\0';
-// 	return (alloc);
-// }

@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:59:47 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/14 21:34:42 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/17 03:08:44 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ char *_remallc(char *str, char c)
     save = malloc(strlen(str)+1);
     while(str[++a])
         save[a] = str[a];
-    save[a] = 0;
     // free(str);
+    save[a] = 0;
     str = malloc((strlen(str) + 2) * sizeof(char));
     str[strlen(save)] = c;
     str[strlen(save)+1] = 0;
@@ -71,16 +71,18 @@ void who_first(char *str, int *x, t_creat **res, t_env *env)
     word[0] = 0;
     while (str[b] && !ft_isspace(str[b]))
     {
-        if(str[b] == '$')
-        {
-            join = check_expand_rd(str, &b, env);
-            word = ft_strjoin(word, join);
-        }
+        // if(str[b] == '$')
+        // {
+        //     join = check_expand_rd(str, &b, env);
+        //     word = ft_strjoin(word, join);
+        // }
         if(str[b] == '"' || str[b] == '\'')
         {
-            join = quts(str, &b);
+            join = quts(str, &b, env);
             word = ft_strjoin(word, join);
         }
+        else if(str[b] != '$' && not_2(str[b]) && str[b])
+            word = _remallc(word, str[b]);
         if(!str[b] || !not_2(str[b]))
             break ;
         b++;
@@ -150,7 +152,7 @@ void take_string(char *str, int *x, t_creat **res, t_env *env)
         else
         {
             flag = str[b];
-            join = quts(str, &b);
+            join = quts(str, &b, env);
             word = ft_strjoin(word, join);
         }
         b++;
