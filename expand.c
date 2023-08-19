@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 22:34:23 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/17 18:42:27 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/19 03:49:04 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ char	*check_expand_rd(char *str, int *x, t_env *env)
 
     a = x[0];
     word = 0;
-    // printf("->>> %s\n", str+a);
     while(str[a])
     {
         if(is_yes(str[a]))
@@ -103,6 +102,7 @@ char	*check_expand_rd(char *str, int *x, t_env *env)
         {
             join = quots_expand(str, &a, env);
             word = ft_strjoin(word, join);
+            
         }
         if(str[a] == '$')
         {
@@ -134,54 +134,38 @@ char	*check_expand_rd(char *str, int *x, t_env *env)
 //             break ;
 //         b++;
 //     }
-//     (*x) = b;
 //     return (word);  
 // }
 
-char *overwrite(char *qt, char *str, char *word, int size)
-{
-    char *over;
-    int a;
+// char *overwrite(char *qt, char *str, char *word, int size)
+// {
+//     char *over;
+//     int a;
 
-    a = 0;
-    (void)word;
-    (void)qt;
-    over = malloc((ft_strlen(str) + size + 1) * sizeof(char));
-    return str;
-}
+//     a = 0;
+//     (void)word;
+//     (void)qt;
+//     over = malloc((ft_strlen(str) + size + 1) * sizeof(char));
+//     return str;
+// }
 
-long long deff(long long a, long long b)
-{
-    if (a >= b)
-        return (a - b);
-    return (b * -1);
-}
+// long long deff(long long a, long long b)
+// {
+//     if (a >= b)
+//         return (a - b);
+//     return (b * -1);
+// }
 
-char *expand_inside_dq(char *str, int *x, t_env *env)
-{
-    puts("------");
-    int a;
-    int b;
-    int y;
-    int start;
-    char *word;
-    char *qt;
+// char *expand_inside_dq(char *str, int *x, t_env *env)
+// {
+//     int a;
+//     char *word;
 
-    a = x[0];
-    start = a;
-    qt = 0;
-    word = check_expand_rd(str, &a, env);
-    y = ft_strlen(word);
-    b = a - start;
-    y = deff(y, b);
-    b = a;
-    qt = quts(str, &a, env);
-    printf("->>> %s\n", qt);
-    a = b;
-    word = overwrite(qt, str, word, y);
-    (*x) = a;
-    return (str);
-}
+//     a = x[0];
+//     word = take_expand_word(str, &a, env);
+//     (*x) = a;
+//     return (str);
+// }
 
 int	ft_isdigit(int c)
 {
@@ -196,25 +180,36 @@ int if_expand(char c)
         return (1);
     return (0);
 }
+
+// int special_cases(char c)
+// {
+    
+// }
 char *take_expand_word(char *str, int *x, t_env *env)
 {
     int b;
     char *word;
     int count;
 
+    
     word = malloc(2);
     word[0] = 0;
     count = 0;
     b = x[0] - 1;
     while(str[++b] == '$')
         count++;
+    // if(special_cases(str[b]))
+    // {
+        
+    // }   
     while (str[b] && not(str[b]))
         word = _remallc(word, str[b++]);
+    if (count % 2 && word[0] == 0)
+        return((*x) = b, _remallc(word, '$'));
     word = expand(env, count, word);
     (*x) = b;
     return word;
 }
-
 
 void check_expand(char *str, int *x, t_creat **res, t_env *env)
 {
@@ -222,7 +217,7 @@ void check_expand(char *str, int *x, t_creat **res, t_env *env)
     char *word;
     char *join;
 
-    a = 0;
+    a = x[0];
     while(str[a])
     {
         if(is_yes(str[a]))
@@ -239,5 +234,5 @@ void check_expand(char *str, int *x, t_creat **res, t_env *env)
         }
     }
     (*x) = a;
-    insert(res, word, "CMD");
+    insert(res, word, "CMD", 0);
 }

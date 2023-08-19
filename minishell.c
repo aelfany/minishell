@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 10:09:47 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/14 14:51:59 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/19 03:31:58 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,17 +48,17 @@ int main(int ac, char **av, char **env)
             continue ;
         res = read_string(var->line_read, envr);
         
-        while(res)
-        {
-            printf("type[%s] %s\n", res -> token, res -> cmd);
-            // int a = 0;
-            // while(res -> opt[a])
-            // {
-            //     printf("type[OPT] %s\n", res -> opt[a]);
-            //     a++;
-            // }
-            res = res -> next;
-        }
+        // while(res)
+        // {
+        //     printf("type[%s] %s\n", res -> token, res -> cmd);
+        //     // int a = 0;
+        //     // while(res -> opt[a])
+        //     // {
+        //     //     printf("type[OPT] %s\n", res -> opt[a]);
+        //     //     a++;
+        //     // }
+        //     res = res -> next;
+        // }
         
         // if(ft_strcmp("make", var->line_read) == 0){
         //     var->cmd_options = ft_split(var->line_read, ' ');

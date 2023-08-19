@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 10:09:43 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/17 03:05:56 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/19 03:47:38 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ int			ft_isspace(char c);
 void		error_hh(char *str);
 void 		error_handler(void); 
 t_creat		*append(t_creat *res);
+t_creat		*new_list(t_creat *res);
 int			skip_w_space(char *str);
 int 		counter_quots(char *str);
 char		*ft_strdup(const char *s1);
@@ -122,11 +123,11 @@ char		*_remallc(char *str, char c);
 char		*quts(char *str, int *x, t_env *env);
 t_creat		*read_string(char *str, t_env *envr);
 char		*expand(t_env *env, int count, char *word);
-void		insert(t_creat **root, char *item, char *str);
 char		*check_expand_rd(char *str, int *x, t_env *env);
 char		*expand_inside_dq(char *str, int *x, t_env *env);
 char		*take_expand_word(char *str, int *x, t_env *env);
 void		add_back_token(t_creat **res, char *word, char flag);
+void		insert(t_creat **root, char *item, char *str, int flag);
 void 		who_first(char *str, int *x, t_creat **res, t_env *env);
 void		take_string(char *str, int *x, t_creat **res, t_env *env);
 void		check_expand(char *str, int *x, t_creat **res, t_env *env);

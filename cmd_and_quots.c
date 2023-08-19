@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:59:47 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/17 03:08:44 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/19 03:49:25 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char *_remallc(char *str, char c)
 
 int not_3(char c)
 {
-    if(c == '|' || c == '<' || c == '>' || c == '$')
+    if(c == '|' || c == '<' || c == '>')
         return (0);
     return (1);
 }
@@ -71,24 +71,24 @@ void who_first(char *str, int *x, t_creat **res, t_env *env)
     word[0] = 0;
     while (str[b] && !ft_isspace(str[b]))
     {
-        // if(str[b] == '$')
-        // {
-        //     join = check_expand_rd(str, &b, env);
-        //     word = ft_strjoin(word, join);
-        // }
+        if(str[b] == '$')
+        {
+            join = take_expand_word(str, &b, env);
+            word = ft_strjoin(word, join);
+        }
         if(str[b] == '"' || str[b] == '\'')
         {
             join = quts(str, &b, env);
-            word = ft_strjoin(word, join);
+            word = ft_strjoin(word, join);   
         }
         else if(str[b] != '$' && not_2(str[b]) && str[b])
             word = _remallc(word, str[b]);
-        if(!str[b] || !not_2(str[b]))
+        if(!str[b] || !not_2(str[b]) || ft_isspace(str[b]))
             break ;
         b++;
     }
     (*x) = b;
-    insert(res, word, "CMD");
+    insert(res, word, "CMD", 0);
 }
 // void quots_handler(char *str, int *x, t_creat **res)
 // {
@@ -136,29 +136,34 @@ void who_first(char *str, int *x, t_creat **res, t_env *env)
 
 void take_string(char *str, int *x, t_creat **res, t_env *env)
 {
-    int b;
-    char flag;
-    char *word;
-    char *join;
-    (void)env;
+    int     b;
+    char    flag;
+    char    *word;
+    char    *join;
     
     word = malloc(2);
     word[0] = 0;
     b = x[0];
     while (str[b] && !ft_isspace(str[b]) && not_3(str[b]))
     {
-        if ((str[b] != '"' && str[b] != '\''))
+        if ((str[b] != '"' && str[b] != '\'') && str[b] != '$')
            word = _remallc(word, str[b]);
-        else
+        if(str[b] == '$')
+        {
+            join = take_expand_word(str, &b, env);
+            word = ft_strjoin(word, join);
+        }
+        if ((str[b] == '"' || str[b] == '\'') )
         {
             flag = str[b];
             join = quts(str, &b, env);
             word = ft_strjoin(word, join);
+            printf("%s\n", word);
         }
+        if(!str[b])
+            break;
         b++;
     }
     (*x) = b;
-    insert(res, word, "CMD");
-    // free(word);
-    // free(word);
+    insert(res, word, "CMD", 0);
 }

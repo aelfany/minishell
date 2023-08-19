@@ -6,7 +6,7 @@
 #    By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/20 11:45:24 by abelfany          #+#    #+#              #
-#    Updated: 2023/08/16 07:57:40 by abelfany         ###   ########.fr        #
+#    Updated: 2023/08/19 03:53:15 by abelfany         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,12 +20,12 @@ SRC = minishell.c \
 		helpers_functions.c \
 		 ft_split.c ./commands/export.c ./commands/unset.c ft_getenv.c expand.c expand_helper.c \
 		exec_tools.c ft_strjoin.c init.c env.c ft_atoi.c exec_cmd.c export_parsing.c\
-	 	./commands/cd.c ./commands/pwd.c  ./commands/echo.c check_cmd.c error_handler.c\
+	 	./commands/cd.c ./commands/pwd.c  ./commands/echo.c check_cmd.c\
 	 	tools.c ./commands/exit.c ./commands/env.c pipes.c  pipe_exec.c pipe_close.c\
 		red_input.c utils.c herdoc_append.c extensions.c checkers.c cmd_and_quots.c lst_gen.c redirection.c \
 
 S_OBJ = $(SRC:.c=.o)
-C_FLAG = -Wall -Wextra -Werror -fsanitize=address -g3
+C_FLAG = -Wall -Wextra -Werror -fsanitize=address 
 RM = @rm -rf
 
 all: $(NAME)
