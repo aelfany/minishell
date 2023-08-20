@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 15:55:44 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/13 16:33:42 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/20 03:57:18 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int counter(char *str, char c)
     return (count);
 }
 
-void error_handler(void)
+void error_handler(char *str)
 {
-    puts("\033[0;91msyntax error !\033[0m");
+    printf("minishell: syntax error near unexpected token `%s'\n", str);
 }

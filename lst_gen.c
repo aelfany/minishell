@@ -6,125 +6,25 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 16:42:58 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/19 04:48:00 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/20 03:48:46 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-// // void error_case(int status)
-// // {
-// //     if(status == 0)
-// //         printf("bash: syntax error");
-// //     exit(10);
-// // }
-
-// // void insert_opt(t_creat **root, char *str)
-// // {
-// //     int a;
-// // 	int count;
-// //     int b;
-
-// //     a = 0;
-// //     b = -1;
-// // 	count = 0;
-// //     char **save;
-// //     while((*root) -> opt[count])
-// //         count++;
-// // 	printf("->>> %d\n", count);
-// // 	save = malloc((count+1) * sizeof(char *));
-// // 	save[count] = NULL;
-// // 	a = -1;
-// // 	while((*root) -> opt[++a])
-// // 		save[a] = (*root)-> opt[a];
-// // 	ft_free((*root) -> opt);
-// // 	a = -1;
-// //     (*root) -> opt = malloc((count+2) * sizeof(char *));
-// //     (*root) -> opt[count] = ft_strdup(str);
-// //     (*root) -> opt[count+1] = NULL;
-// //     a = 0;
-// //     while(save[a])
-// // 	{
-// //         (*root)-> opt[a] = save[a];	
-// // 		a++;
-// // 	}
-// // 	ft_free(save);
-// // }
-// // void	test(t_creat **root, char *item, char *str)
-// // {
-// // 	t_creat	*temp;
-// // 	t_creat	*ptr;
-
-// //     temp = NULL;
-// // 	temp = malloc(sizeof(t_creat));
-// // 	if (!temp)
-// // 		exit(0);
-// //     temp -> cmd = ft_strdup(item);
-// // 	temp -> token = str;
-// // 	temp -> opt = malloc(1 * sizeof(char *));
-// // 	temp -> opt[0] = NULL;
-// // 	temp -> next = NULL;
-// // 	if (*root == NULL)
-// // 		*root = temp;
-// // 	else
-// // 	{
-// // 		ptr = *root;
-// // 		while (ptr -> next != NULL)
-// // 			ptr = ptr-> next;
-// // 		ptr -> next = temp;
-// // 	}
-// // }
-// // int cmp(t_creat *cmp, char *str)
-// // {
-// // 	while(cmp)
-// // 	{
-// // 		if(ft_strcmp(cmp -> token, "HRD"))
-// // 			return (1);
-// // 		if(ft_strcmp(cmp -> token, "RDOUT"))
-// // 			return (1);
-// // 		if(ft_strcmp(cmp -> token, "RDIN"))
-// // 			return (1);
-// // 		if(ft_strcmp(cmp -> token, "RD_AP"))
-// // 			return (1);
-// // 		if(ft_strcmp(cmp -> token, "RD_AP"))
-// // 			return (1);
-// // 		if(ft_strcmp(cmp -> token, "PIP"))
-// // 			return (1);
-// // 	}
-// // 	return (0);
-// // }
-int	ft_lenstrs(char **strs)
-{
-	int	x;
-
-	x = 0;
-	while (strs[x])
-		x++;
-	return (x);
-}
-
-int	ft_free(char **strs)
-{
-	int	x;
-
-	x = 0;
-	while (strs[x])
-		free(strs[x++]);
-	free(strs);
-	return (0);
-}
 
 void	insert(t_creat **root, char *item, char *str, int flag)
 {
 	t_creat	*temp;
 	t_creat	*ptr;
-	(void)flag;
 
-    temp = NULL;
+	flag = 0;
+	temp = NULL;
 	temp = malloc(sizeof(t_creat));
 	if (!temp)
 		exit(0);
-    temp -> cmd = item;
+	temp -> cmd = item;
 	temp -> token = ft_strdup(str);
+	temp -> opt = NULL;
 	temp -> next = NULL;
 	if (*root == NULL)
 		*root = temp;
@@ -140,11 +40,13 @@ void	insert(t_creat **root, char *item, char *str, int flag)
 t_creat	*ft_lstnew(char **str)
 {
 	t_creat	*hel;
+
 	hel = malloc(sizeof(t_creat));
 	if (!hel)
 		return (0);
-	hel -> cmd = ft_strdup(str[0]);
+	hel -> cmd = str[0];
 	hel -> opt = str;
+	hel -> token = ft_strdup("CMD");
 	hel -> next = NULL;
 	return (hel);
 }
@@ -154,156 +56,74 @@ int	lenlist(t_creat *list)
 	int	x;
 
 	x = 0;
-	while (list &&  ft_strcmp(list-> token, "PIP"))
+	while (list && ft_strcmp(list-> token, "PIP"))
 	{
-		if(!ft_strcmp(list -> token, "CMD"))
+		if (!ft_strcmp(list -> token, "CMD"))
 			x++;
 		list = list -> next;
 	}
 	return (x);
 }
 
-t_creat *cmd_node(t_creat *res)
+t_creat	*cmd_node(t_creat *res)
 {
-	int a;
-	char **opt;
-	t_creat *list;
+	int		a;
+	char	**opt;
+	t_creat	*list;
 
 	list = NULL;
 	a = lenlist(res);
 	opt = malloc((a + 1) * sizeof(char *));
 	opt[a] = NULL;
 	a = -1;
-	while(res && ft_strcmp(res -> token, "PIP"))
+	while (res && ft_strcmp(res -> token, "PIP"))
 	{
-		if(!ft_strcmp(res -> token, "CMD"))
+		if (!ft_strcmp(res -> token, "CMD"))
 			opt[++a] = ft_strdup(res -> cmd);
 		res = res -> next;
 	}
 	list = ft_lstnew(opt);
-	return list;
+	return (list);
 }
-
-t_creat *new_list(t_creat *res)
+void free_list(t_creat **save)
 {
-	t_creat *save;
-	t_creat *list;
 
-	list = cmd_node(res);
-	save = res;
-	while(save)
+	while ((*save) -> next)
 	{
-		if(ft_strcmp(save -> token, "CMD"))
-			insert(&list, save -> cmd, save -> token, 0);
-		// if(!ft_strcmp(save -> token, "CMD"))
-		save = save -> next;
+		free((*save) -> token);
+		free((*save) -> cmd);
+		free((*save));
+		(*save) = (*save) -> next;
 	}
-	save = list;
-	while(save)
-	{
-		printf("type[%s] %s\n", save -> token, save -> cmd);
-		save = save -> next;
-	}
-	return list;
 }
-// printf("->>> %d\n", a);
+t_creat	*new_list(t_creat *res)
+{
+	t_creat	*save;
+	t_creat	*list;
+	t_creat	*add;
 
-// t_creat *new_list(t_creat *res, int x)
-// {
-// 	int a;
-// 	int b;
-// 	t_creat *list;
-// 	list = ft_lstnew(x);
-// 	a = 0;
-// 	b = 1;
-// 	while(res)
-// 	{
-// 		if(!ft_strcmp(res -> token, "CMD") ||
-// 			!ft_strcmp(res -> token, "DQ") ||
-// 			!ft_strcmp(res -> token, "SQ"))
-// 		{
-// 			if(b)
-// 			{
-// 				list -> cmd = ft_strdup(res -> cmd);
-// 				list -> token = ft_strdup(res -> token);
-// 				b--;
-// 			}
-// 			list -> opt[a] = ft_strdup(res -> cmd);
-// 			a++;
-// 		}
-// 		if(list -> opt[a] == NULL)
-// 			break ;
-// 		res = res -> next;
-// 	}
-// 	return list;
-// }
-
-// // t_creat *append_helper(t_creat **tok, t_creat *res)
-// // {
-// // 	int count;
-// // 	t_creat *list;
-// // 	t_creat *tok;
-
-// // 	count = 0;
-// // 	list = (*tok);
-// // 	tok = NULL;
-// // 	while(tok)
-// // 	{
-// // 		if(!ft_strcmp((*tok) -> token, "CMD") ||
-// // 			!ft_strcmp((*tok) -> token, "DQ") || 
-// // 				!ft_strcmp((*tok) -> token, "SQ"))
-// // 			count++;
-// // 		(*tok) = (*tok) -> next;
-// // 	}
-// // 	tok = new_list(list, count);
-// // 	(*tok) = list;
-// // 	while((*tok))
-// // 	{
-// // 		if(ft_strcmp((*tok) -> token, "CMD") 
-// // 		&& ft_strcmp((*tok) -> token, "DQ") 
-// // 		&& ft_strcmp((*tok) -> token, "SP")
-// // 		&& ft_strcmp((*tok) -> token, "SQ"))
-// // 			insert(&tok, (*tok) -> cmd, (*tok) -> token);
-// // 		(*tok) = (*tok) -> next;
-// // 	}
-// // 	return tok;
-// // }
-
-// t_creat *append(t_creat *res)
-// {
-// 	int count;
-// 	t_creat *list;
-// 	t_creat *tok;
-
-// 	count = 0;
-// 	list = res;
-// 	tok = NULL;
-// 	while(res)
-// 	{
-// 		if(!ft_strcmp(res -> token, "CMD") ||
-// 			!ft_strcmp(res -> token, "DQ") || 
-// 				!ft_strcmp(res -> token, "SQ"))
-// 			count++;
-// 		res = res -> next;
-// 	}
-// 	tok = new_list(list, count);
-// 	res = list;
-// 	while(res)
-// 	{
-// 		if(ft_strcmp(res -> token, "CMD") 
-// 		&& ft_strcmp(res -> token, "DQ") 
-// 		&& ft_strcmp(res -> token, "SP")
-// 		&& ft_strcmp(res -> token, "SQ"))
-// 			insert(&tok, res -> cmd, res -> token);
-// 		res = res -> next;
-// 	}
-// 	return tok;
-// }
-
-// // t_creat *append(t_creat *res)
-// // {
-	
-// // }
+	list = NULL;
+	if (check_command(res))
+		list = cmd_node(res);
+	save = res;
+	add = NULL;
+	while (save)
+	{
+		if (ft_strcmp(save -> token, "CMD"))
+			insert(&list, save -> cmd, save -> token, 0);
+		if (!ft_strcmp(save -> token, "PIP"))
+		{
+			if (check_command(save -> next))
+			{
+				add = cmd_node(save -> next);
+				ft_lstadd_back(&list, add);
+			}
+		}
+		save = save -> next;
+	}
+	free_list(&res);
+	return (list);
+}
 
 // // CMD = COMMOND OR WORD
 // // SQ = SINGLE QUOTS

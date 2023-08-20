@@ -1,4 +1,4 @@
- /* ************************************************************************** */
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec_tools.c                                       :+:      :+:    :+:   */
@@ -6,145 +6,85 @@
 /*   By: anchaouk <anchaouk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 20:01:44 by anchaouk          #+#    #+#             */
-/*   Updated: 2023/05/23 14:06:46 by anchaouk         ###   ########.fr       */
+/*   Updated: 2023/08/18 18:19:19 by anchaouk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**path_finder(char **env)
-{
-	int		i;
-	int		d;
-	char	*path;
-	char	**result;
-
-	i = 0;
-	d = 0;
-	path = "PATH";
-	while (env[i])
-	{
-		if (env[i][d] == path[d])
-			d++;
-		else if (path[d] == '\0')
-			break ;
-		else if (env[i][d] != path[d])
-			i++;
-		else
-			d = 0;
-	}
-	result = ft_split(env[i], ':');
-	return (result);
-}
-
 char	*command_finder(char *cmd, char *env)
 {
 	char	**path;
-	char	**cmnd;
 	char	*fullcmd;
 	int		i;
 	int		d;
-	char	*slsh;
 
 	path = ft_split(env, ':');
-	cmnd = ft_split(cmd, ' ');
+	fullcmd = NULL;
 	i = 0;
 	d = 0;
-	if (cmnd[0][0] == '<')
-		d = 2;
-	slsh = "/ .";
-	if (access(cmnd[0], X_OK) == 0)
-		return (cmnd[0]);
-	else if (cmnd[0][0] == slsh[0])
-		ft_error(cmnd[0]);
-	if (cmnd[0][0] == slsh[2])
-		ft_error(cmnd[0]);
+	if (env == NULL || cmd[0] == ' ')
+		return (NULL);
+	if (access(cmd, X_OK) == 0)
+		return (cmd);
 	while (path[i])
 	{
 		fullcmd = ft_strjoin(path[i], "/");
-		fullcmd = ft_strjoin(fullcmd, cmnd[d]);
+		fullcmd = ft_strjoin(fullcmd, cmd);
 		if (access(fullcmd, X_OK) == 0)
 			return (fullcmd);
 		free (fullcmd);
 		i++ ;
 	}
-	return (cmnd[0]);
+	return (cmd);
 }
 
-void	ft_error(char *str)
+void	exec_built_ins(int id, t_vars *var, t_env **envr, t_creat *res)
 {
-	perror(str);
-	exit(1);
-}
-
-void	exec_built_ins(int id, t_vars *var, t_env **envr, int p_id)
-{
-	int	f_id;
 	int	fd;
 
 	fd = -1;
-	f_id = 1;
-	if (var->cmd_options[0][0] == '<')
-	{
-		fd = ft_check_redirections(var);
-		f_id = fork();
-		if (f_id == -1 || fd == -1)
-		{
-			printf("error\n");
-			exit(1);
-		}
-		dup2(0, fd);
-	}
-	if (id == 0 && p_id == 0)
-		cd(var, envr);
-	else if (id == 1 && p_id == 0)
-		echo(var->cmd_options);
-	else if (id == 2 && p_id == 0)
-		pwd(*envr);
-	else if (id == 3 && p_id == 0)
-		ft_export(envr, var);
-	else if (id == 4 && p_id == 0)
-	{
-		unset(envr, var);
-		printf("%s\n", (*envr)->opt);
-	}
-	else if (id == 5 && p_id == 0)
-		ft_env(*envr);
-	else if (id == 6 && p_id == 0)
-		ft_exit(var->exitcode, *envr, var);
-	if (f_id == 0)
-	{
-		close(fd);
-		exit(0);
-	}
-	if (p_id == 0)
-		exit(0);
+	if (id == 0)
+		g_exitstatus = cd(res, envr);
+	else if (id == 1)
+		g_exitstatus = echo(res->opt);
+	else if (id == 2)
+		g_exitstatus = pwd(*envr);
+	else if (id == 3)
+		ft_export(envr, res->opt, 1);
+	else if (id == 4)
+		unset(envr, res, 1, 1);
+	else if (id == 5)
+		ft_env(res->opt, *envr);
+	else if (id == 6)
+		ft_exit(var->exitcode, *envr, res, var);
 }
 
-int	execute_cmd(t_vars *var, t_env **envr)
+void	execute_cmd(t_vars **var, t_env **envr, t_creat **res)
 {
 	int		id;
-	int		pipe_id;
 	char	*path;
+	t_creat	*ptr;
 
 	id = 0;
-	pipe_id = 0;
 	path = ft_getenv(*envr, "PATH");
-	if (path != NULL)
+	ptr = *res;
+	ft_open_redirections(res, var);
+	while (ptr)
 	{
-		var->cmd = command_finder(var->line_read, path);
-		var->cmd_options = ft_split(var->line_read, ' ');
+		if ((*var)->failed_rd == -1)
+			break ;
+		if (check_pipes(*res) == 1)
+			pipes_exec(*res, *var);
+		else if (ft_strcmp(ptr->token, "CMD") == 0
+			|| ft_strcmp(ptr->token, "DQ") == 0)
+		{
+			id = check_built_ins(ptr, *var);
+			if (id != -1)
+				exec_built_ins(id, *var, envr, ptr);
+			else
+				ft_exec(*envr, *res, 0);
+		}
+		ptr = ptr->next;
 	}
-	pipe_id = check_pipes(var);
-	var->cmd_count = 2;
-	if	(pipe_id == 1)	// checks if pipe exists
-		pipes_exec(var);
-	int p_id = fork();
-	id =  check_built_ins(var);	// checks if builtins
-	if (id != -1 && pipe_id != 1)
-		exec_built_ins(id, var, envr, p_id);
-	else if (id == -1 && pipe_id != 1) // checks if neither pipe or builtin
-		ft_exec(var, p_id);
-	waitpid(-1, NULL, 0);
-	return (0);
 }

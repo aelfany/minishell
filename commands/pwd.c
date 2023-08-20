@@ -1,23 +1,30 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pwd.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: anchaouk <anchaouk@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/13 19:03:37 by anchaouk          #+#    #+#             */
+/*   Updated: 2023/08/16 13:21:07 by anchaouk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h" 
 
 int	pwd(t_env *envr)
 {
 	t_env	*ptr;
-	int		flag;
 
 	ptr = envr;
-	flag = 0;
-	while(ptr)
+	while (ptr)
 	{
-		if (ft_strcmp(ptr->opt, "PWD") == 0)
+		if (ft_strcmp(ptr->name, "1PWD") == 0)
 		{
-			printf("%s\n", ptr->envr);
-			flag = 1;
-			break;
+			printf("%s\n", ptr->value);
+			break ;
 		}
 		ptr = ptr->next;
 	}
-	if (flag == 0)
-		printf(".\n");
 	return (0);
 }

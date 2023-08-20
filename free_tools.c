@@ -1,13 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   free_tools.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anchaouk <anchaouk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/17 00:43:47 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/20 04:22:35 by abelfany         ###   ########.fr       */
+/*   Created: 2023/08/18 17:55:04 by anchaouk          #+#    #+#             */
+/*   Updated: 2023/08/18 17:57:08 by anchaouk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+// #include "minishell.h"
+
+// void	ft_free_cmd(char **opt, char *cmd)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while(env)
+// }

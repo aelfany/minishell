@@ -1,26 +1,25 @@
-	#include "../minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: anchaouk <anchaouk@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/17 15:56:34 by anchaouk          #+#    #+#             */
+/*   Updated: 2023/08/17 18:46:08 by anchaouk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void	print_env(t_env *envr)
-{
-	t_env	*ptr;
+#include "../minishell.h"
 
-	ptr = envr;
-	while(ptr)
-	{
-		if (ptr->envr ==  NULL)
-			printf("declare -x %s=" "\n", ptr->opt);
-		else if (ptr->hidden_flag == 0)
-			printf("declare -x %s=\"%s\"\n", ptr->opt, ptr->envr);
-		ptr = ptr->next;
-	}
-}
+// //checks if it needs to be appended if true returns 1
 
-int	ft_check_append(char *str) //checks if it needs to be appended if true returns 1
+int	ft_check_append(char *str)
 {
 	int	i;
 
 	i = 0;
-	while(str[i])
+	while (str[i])
 	{
 		if (str[i] == '+' && str[i + 1] == '=')
 			return (1);
@@ -29,48 +28,63 @@ int	ft_check_append(char *str) //checks if it needs to be appended if true retur
 	return (0);
 }
 
+void	ft_append(t_env *ptr, char *str, int i)
+{
+	char	*append;
+	char	*result;
+	int		d;
+
+	append = malloc(1 * (ft_strlen(str) - i) + 1);
+	result = NULL;
+	d = 0;
+	while (str[i])
+	{
+		append[d] = str[i];
+		d++;
+		i++;
+	}
+	append[d] = '\0';
+	result = ft_strjoin(ptr->value, append);
+	if (ptr->value != NULL && ptr->free_value == 0)
+		free(ptr->value);
+	ptr->value = result;
+	ptr->uninitialized = 0;
+	ptr->hidden_flag = 0;
+}
+
+//  -- if (str[i] == '\0')
+//		return (1);  
+// condition done for name that exists and cant be updated since
+// there is no value EX: export a
+
 int	ft_change_env(t_env *env_struct, char *str)
 {
 	int		i;
 	int		d;
-	char	*append;
-	char	*result;
 
 	i = ft_strlen_delim(str, '=');
 	d = 0;
-	append = NULL;
-	result = NULL;
+	if (str[i] == '\0')
+		return (1);
 	i++;
-	if (ft_check_append(str) == 1 || env_struct->envr == NULL)
+	if (ft_check_append(str) == 1 || env_struct->value == NULL)
 	{
-		append = malloc(1 * (ft_strlen(str) - i) + 1);
-		while(str[i])
-		{
-			append[d] = str[i];
-			d++;
-			i++;
-		}
-		append[d] = '\0';
-		printf("String to be appended = %s\n", append);
-		result = ft_strjoin(env_struct->envr, append);
-		if (env_struct->envr != NULL)
-			free(env_struct->envr);
-		env_struct->envr = result;
-		env_struct->hidden_flag = 0;
-		printf("final appending result  = %s\n", env_struct->envr);
+		ft_append(env_struct, str, i);
 		return (1);
 	}
 	else
-		env_struct->envr = malloc(1 * (ft_strlen(str) - i) + 1);
-	while(str[i])
+		env_struct->value = malloc(1 * (ft_strlen(str) - i) + 1);
+	while (str[i])
 	{
-		env_struct->envr[d] = str[i];
+		env_struct->value[d] = str[i];
 		d++;
 		i++;
 	}
-	env_struct->envr[d] = '\0';
+	env_struct->value[d] = '\0';
 	return (1);
 }
+
+// -- compares given name return 1 if there and updated else returns 0
 
 int	ft_search_env(t_env **env_struct, char *str)
 {
@@ -81,30 +95,15 @@ int	ft_search_env(t_env **env_struct, char *str)
 
 	i = 0;
 	d = 0;
-	str_id = malloc(1 * ft_strlen_delim(str, '=') + 1);
+	str_id = ft_id_fillup(str);
 	ptr = *env_struct;
-	while(str[i] != '=' && str[i]) //fills up the env with only the id to compare
-		{
-			if (str[i] == '+')
-			{
-				i++;
-				continue;
-			}
-			str_id[d] = str[i];
-			d++;
-			i++;
-		}
-	str_id[d] = '\0';
 	i = 0;
-	printf("ptr->opt = %s\n", str_id);
-	while(ptr) //compares if the env allready exists
+	while (ptr)
 	{
-		if (ft_strcmp(str_id, ptr->opt) == 0)
+		if (ft_strcmp(str_id, ptr->name) == 0)
 		{
-			puts("im gonna be changed\n");
-			i = ft_change_env(ptr, str); //if true it changes the value or appends 
-			printf("%s-----%s\n", ptr->opt, ptr->envr);
-			break;
+			i = ft_change_env(ptr, str);
+			break ;
 		}
 		ptr = ptr->next;
 	}
@@ -112,53 +111,35 @@ int	ft_search_env(t_env **env_struct, char *str)
 	return (i);
 }
 
-void	ft_export(t_env **envr, t_vars *var)
+// -- ft_count_vars = counts how many options there is if none prints env
+// -- ft_search_env = searches for the env if exists it changes or appends to it
+// -- ft_export_last = adds the env variable to the list
+
+void	ft_export(t_env **envr, char **opt, int d)
 {
 	t_env	*ptr;
-	int		i;
-	int		d;
-	char	**opt = ft_split(var->line_read, ' ');
 
 	ptr = *envr;
-	i = 0;
-	d = 1;
-	if (ft_count_vars(opt) == 1) //printing the env with quotes
-	{
-		print_env(*envr);
+	if (ft_count_vars(opt, *envr) == 1)
 		return ;
-	}
-	while(opt[d])
+	while (opt[d])
 	{
-		if (ft_export_parser(opt[d], 0) == -1)
-		{
-			d++;
-		 	continue ;
-		}
-		else if (ft_search_env(envr, opt[d]) == 1) //search if it exists return one if the value changed or appended thus return
+		if (ft_export_parser(opt[d], 0) == -1) 
 		{
 			d++;
 			continue ;
 		}
-		while(ptr->next)
-			ptr = ptr->next;
-		ptr->next = malloc(sizeof(t_env) * 1);
-		ptr = ptr->next;
-		i = calc_size(opt[d], '=');
-		if (opt[1][i] == '\0')
+		if (ft_search_env(envr, opt[d]) == 1)
 		{
-			ptr->opt = malloc(1 * (i + 1));
-			ptr->envr = NULL;
-			ft_fillup(ptr, opt[d]);
-			ptr->next = NULL; 
+			d++;
+			g_exitstatus = 0;
 			continue ;
 		}
-		ptr->opt = malloc(1 * (i + 1));
-		ft_fillup(ptr, opt[d]);
-		ptr->envr = malloc(1 * (ft_strlen(opt[d]) - 1) + 1);
-		ft_fillup_envr(ptr, opt[d]);
-		ptr->hidden_flag = 0;
-		ptr->next = NULL;
-		ptr = *envr;
+		if (ft_export_last(envr, opt, d) == 1)
+		{
+			d++;
+			continue ;
+		}
 		d++;
-	} 
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: anchaouk <anchaouk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 20:12:13 by anchaouk          #+#    #+#             */
-/*   Updated: 2023/07/16 16:22:06 by anchaouk         ###   ########.fr       */
+/*   Updated: 2023/08/16 19:08:18 by anchaouk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_strlen(const char *str)
 	i = 0;
 	if (!str)
 		return (0);
-	while(str[i])
+	while (str[i])
 		i++;
 	return (i);
 }
@@ -45,9 +45,9 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	i = 0;
 	while (i <= lenres && s2[i] != '\0')
 	{
-			alloc[lenres] = s2[i];
-			lenres++;
-			i++;
+		alloc[lenres] = s2[i];
+		lenres++;
+		i++;
 	}
 	alloc[lenres] = '\0';
 	return (alloc);
@@ -74,9 +74,9 @@ char	*ft_strjoin_space(char const *s1, char const *s2)
 	i = 0;
 	while (i <= lenres && s2[i] != '\0')
 	{
-			alloc[lenres] = s2[i];
-			lenres++;
-			i++;
+		alloc[lenres] = s2[i];
+		lenres++;
+		i++;
 	}
 	alloc[lenres] = '\0';
 	return (alloc);

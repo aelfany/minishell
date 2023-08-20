@@ -6,7 +6,7 @@
 /*   By: anchaouk <anchaouk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 17:32:47 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/06 13:18:28 by anchaouk         ###   ########.fr       */
+/*   Updated: 2023/08/16 19:07:02 by anchaouk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,16 @@ char	*ft_strcpy(char *dest, char *src)
 	return (dest);
 }
 
+//allocates and copys value to it
+
 char	*ft_strcpy_malloc(char *dest, char *src)
 {
 	int	a;
 
 	a = 0;
-	while(src[a])
+	if (src == NULL)
+		return (NULL);
+	while (src[a])
 		a++;
 	dest = malloc(sizeof(char) * a + 1);
 	a = 0;

@@ -1,13 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tools.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/16 19:09:55 by anchaouk          #+#    #+#             */
+/*   Updated: 2023/08/20 03:16:28 by abelfany         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
-
-
 
 void	ft_putstr_fd(char *str, int fd)
 {
 	int	i;
 
 	i = 0;
-	while(str[i])
+	if (str == NULL)
+		return ;
+	while (str[i])
 	{
 		write(fd, &str[i], 1);
 		i++;
@@ -23,22 +35,6 @@ int	ft_strlen_delim(char *str, char delim)
 		i++;
 	return (i);
 }
-
-// int	ft_strcmp(char *s1, char *s2)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	if(s1 == NULL || s2 == NULL)
-// 		return -1;
-// 	while (s1[i] || s2[i])
-// 	{
-// 		if (s1[i] > s2[i] || s1[i] < s2[i])
-// 			return (s1[i] - s2[i]);
-// 		i++;
-// 	}
-// 	return (0);
-// }
 
 int	calc_size(char *str, char delim)
 {
@@ -57,4 +53,25 @@ int	calc_size(char *str, char delim)
 	}
 	i = i - d;
 	return (i);
+}
+
+int	ft_lenstrs(char **strs)
+{
+	int	x;
+
+	x = 0;
+	while (strs[x])
+		x++;
+	return (x);
+}
+
+int	ft_free(char **strs)
+{
+	int	x;
+
+	x = 0;
+	while (strs[x])
+		free(strs[x++]);
+	free(strs);
+	return (0);
 }

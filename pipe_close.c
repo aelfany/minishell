@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	ft_close_first(int end[][2],t_vars *var)
+void	ft_close_first(int end[][2], char **opt, t_vars *var)
 {
 	int	d;
 
@@ -17,16 +17,14 @@ void	ft_close_first(int end[][2],t_vars *var)
 		}
 	d++;
 	}
-	printf("first %d\n", var->i);
-	ft_execone(end[var->i], var);
+	ft_execone(end[var->i], opt, var);
 }
 
-void	ft_close_last(int end[][2], t_vars *var)
+void	ft_close_last(int end[][2], char **opt, t_vars *var)
 {
 	int	d;
 
 	d = 0;
-	// printf("pipes = %d\n", var->pipe_count);
 	while (d < var->pipe_count)
 	{
 		if (d == var->pipe_count -1)
@@ -38,13 +36,10 @@ void	ft_close_last(int end[][2], t_vars *var)
 		}
 		d++;
 	}
-	// printf("%d\n", var->i-1);
-	// printf("sec %d\n", var->i);
-	ft_exectwo(end[var->i - 1],var);
-	puts("iiin\n");
+	ft_exectwo(end[var->i - 1], opt, var);
 }
 
-void	ft_close_pipe(int end[][2], t_vars *var)
+void	ft_close_pipe(int end[][2], char **opt, t_vars *var)
 {
 	int	d;
 
@@ -62,7 +57,7 @@ void	ft_close_pipe(int end[][2], t_vars *var)
 		}
 		d++;
 	}
-	ft_execpipe(var->pipe[var->i], var->pipe[var->i - 1], var);
+	ft_execpipe(var->pipe[var->i], var->pipe[var->i - 1], var, opt);
 }
 
 void	ft_close_all(t_vars *var)
