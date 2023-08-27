@@ -1,50 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_tools.c                                       :+:      :+:    :+:   */
+/*   ft_getenv.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anchaouk <anchaouk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/18 17:55:04 by anchaouk          #+#    #+#             */
-/*   Updated: 2023/08/23 16:35:03 by anchaouk         ###   ########.fr       */
+/*   Created: 2023/07/26 16:44:41 by anchaouk          #+#    #+#             */
+/*   Updated: 2023/08/23 13:11:46 by anchaouk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-void	ft_free_loop(char **opt)
+char	*ft_getenv(t_env *envr, char *var)
 {
-	int	i;
+	t_env	*ptr;
 
-	i = 0;
-	while(opt[i])
+	ptr = envr;
+	while (ptr)
 	{
-		free(opt[i]);
-		i++;
+		if (ft_strcmp(ptr->name, var) == 0)
+			return (ptr->value);
+		ptr = ptr->next;
 	}
-}
-
-void	ft_free_struct(t_env *env, t_creat *res)
-{
-	t_creat	*ptr;
-	t_env	*ptr_env;
-
-	ptr = res;
-	ptr_env = env;
-	if (ptr)
-	{
-		while (ptr)
-		{
-			free(ptr);
-			ptr = ptr->next;
-		}
-	}
-	if (ptr_env)
-	{
-		while (ptr_env)
-		{
-			free(ptr);
-			ptr_env = ptr_env->next;
-		}
-	}
+	return (0);
 }

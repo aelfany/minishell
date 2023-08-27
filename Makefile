@@ -6,7 +6,7 @@
 #    By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/20 11:45:24 by abelfany          #+#    #+#              #
-#    Updated: 2023/08/20 03:03:03 by abelfany         ###   ########.fr        #
+#    Updated: 2023/08/27 05:46:58 by abelfany         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,16 +14,24 @@ HEADER = minishell.h
 NAME = minishell
 LIB = ../libft
 
-SRC = minishell.c ft_strcpy.c  flager.c ft_heredoc.c env_tools.c redirections_tools.c\
-		helpers_functions.c redirections.c ./commands/export_tools.c\
-		 ft_split.c ./commands/export.c ./commands/unset.c ft_getenv.c heredoc.c\
-		exec_tools.c ft_strjoin.c init.c env.c ft_atoi.c exec_cmd.c export_parsing.c\
-	 	./commands/cd.c ./commands/pwd.c  ./commands/echo.c check_cmd.c expand_helper.c\
-	 	tools.c ./commands/exit.c ./commands/env.c pipes.c pipe_exec.c pipe_close.c\
-		read_input.c utils.c extensions.c checkers.c cmd_and_quots.c lst_gen.c redirection.c expand.c \
-		
+SRC =	./parsing/flager.c ./parsing/checkers.c ./parsing/cmd_and_quots.c ./parsing/expand_helper.c \
+		./parsing/expand.c ./parsing/extensions.c ./parsing/handlers.c ./parsing/helpers_functions.c \
+		./parsing/herdoc_append.c ./parsing/heredoc.c ./parsing/lst_gen.c ./parsing/read_input.c ./parsing/expand_fun.c \
+		./parsing/redirection.c ./parsing/split_word.c \
+		./execution/ft_heredoc.c ./execution/ft_heredoc_tools.c ./execution/env_tools.c ./execution/redirections_tools.c \
+		./execution/redirections.c ./execution/ft_getenv.c ./execution/exec_tools.c ./execution/init.c ./execution/env.c \
+		./execution/check_cmd.c ./execution/exec_cmd.c ./execution/env_three_tools.c ./execution/exec_signal.c \
+		./pipes/pipe_close.c ./pipes/pipe_exec.c ./pipes/pipes_hrd.c ./pipes/pipes_rd_tools.c \
+		./pipes/pipes.c ./pipes/init_vars.c ./pipes/pipes_exec_tools.c ./pipes/pipes_tools.c  \
+		./pipes/pipes_rd.c  ./pipes/pipes_hrd_tools.c \
+		./commands/export_tools.c ./commands/export_parsing.c ./commands/unset_parsing.c \
+		./commands/export.c ./commands/unset.c  ./commands/cd_tools.c ./commands/exit.c \
+	 	./commands/cd.c ./commands/pwd.c  ./commands/echo.c ./commands/env.c \
+		ft_atoi.c ft_itoa.c ft_split.c ft_strcpy.c free_tools.c tools.c utils.c ft_strjoin.c \
+		ft_protect.c minishell.c \
+
 S_OBJ = $(SRC:.c=.o)
-C_FLAG = -Wall -Wextra -Werror #-fsanitize=address
+C_FLAG = -Wall -Wextra -Werror #-fsanitize=address -g
 RM = @rm -rf
 
 all: $(NAME)

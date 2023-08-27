@@ -6,7 +6,7 @@
 /*   By: anchaouk <anchaouk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 17:32:47 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/16 19:07:02 by anchaouk         ###   ########.fr       */
+/*   Updated: 2023/08/23 10:52:19 by anchaouk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ char	*ft_strcpy_malloc(char *dest, char *src)
 	while (src[a])
 		a++;
 	dest = malloc(sizeof(char) * a + 1);
+	ft_malloc_protect(dest);
 	a = 0;
 	while (src[a] != '\0')
 	{

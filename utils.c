@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 14:24:21 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/20 03:16:02 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/26 19:56:26 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	not_2(char c)
 		return (0);
 	return (1);
 }
+
 
 int	check_command(t_creat *list)
 {
@@ -65,14 +66,21 @@ int	ft_strcmp(char *s1, char *s2)
 	return (0);
 }
 
-char	*ft_strdup(const char *s1)
+char	*ft_strdup(char *s1)
 {
 	int		a;
 	int		res;
 	char	*cpy;
 
+	if (!s1)
+	{
+		s1 = malloc(2);
+		if(!s1)
+			return (0);
+		return (s1[0] = 0, s1);
+	}
 	a = 0;
-	res = strlen(s1) + 1;
+	res = ft_strlen(s1) + 1;
 	cpy = (char *)malloc(res * sizeof(char));
 	if (!cpy)
 		return (0);

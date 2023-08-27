@@ -6,7 +6,7 @@
 /*   By: anchaouk <anchaouk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 19:00:50 by anchaouk          #+#    #+#             */
-/*   Updated: 2023/08/15 19:11:51 by anchaouk         ###   ########.fr       */
+/*   Updated: 2023/08/21 23:59:26 by anchaouk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 int	ft_error_env(char **opt)
 {
 	if (opt[1])
-		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(opt[1], 2);
-			ft_putstr_fd(": No such file or directory\n", 2);
-			g_exitstatus = 127;
-			return (-1);
-		}
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(opt[1], 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		g_exitstatus = 127;
+		return (-1);
+	}
 	return (0);
 }
 
@@ -40,9 +40,9 @@ void	ft_env(char **opt, t_env *envr)
 	{
 		if (ptr->hidden_flag == 0 && ptr->name != NULL && ptr->value != NULL)
 			printf("%s=%s\n", ptr->name, ptr->value);
-		else if (ptr->hidden_flag == 0 
+		else if (ptr->hidden_flag == 0
 			&& ptr->name != NULL && ptr->value == NULL
-				&& ptr->uninitialized == 0)
+			&& ptr->uninitialized == 0)
 			printf("%s=\n", ptr->name);
 		ptr = ptr->next;
 	}

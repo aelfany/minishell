@@ -3,14 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anchaouk <anchaouk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 19:09:55 by anchaouk          #+#    #+#             */
-/*   Updated: 2023/08/20 03:16:28 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/24 21:47:40 by anchaouk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	ft_isnum(char *str)
+{
+	int	i;
+	
+	i = 0;
+	while(str[i])
+	{
+		if (str[i] >= 48 && str[i] <= 57)
+			i++;
+		else
+			return (-1);
+	}
+	return (0);
+}
 
 void	ft_putstr_fd(char *str, int fd)
 {

@@ -6,27 +6,23 @@
 /*   By: anchaouk <anchaouk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 19:01:52 by anchaouk          #+#    #+#             */
-/*   Updated: 2023/08/18 22:26:37 by anchaouk         ###   ########.fr       */
+/*   Updated: 2023/08/23 20:35:53 by anchaouk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static	int	ft_isnum(int c)
+void	ft_exit_error(char *str, int flag, t_env *envr)
 {
-    if (c >= 48 && c <= 57)
-		return (1);
-	return (0);
-}
-
-static	void	ft_exit_error(char *str, int flag)
-{
+	(void)envr;
 	if (flag == 0)
 	{
+		printf("exit\n");
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(str, 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
 		g_exitstatus = 255;
+		exit(255);
 	}
 	else if (flag == 1)
 	{
@@ -36,71 +32,85 @@ static	void	ft_exit_error(char *str, int flag)
 	}
 }
 
+static	int	ft_parser(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[0] == '\0')
+			return (0);
+		while (str[i] == ' ' || str[i] == '\t')
+			i++;
+		if (str[i] && (str[i] == '-' || str[i] == '+'))
+			i++;
+		while (str[i])
+		{
+			if (str[i] >= 48 && str[i] <= 57)
+				i++;
+			else
+				return (-1);
+		}
+		i++;
+	}
+	return (0);
+}
+
 //checks first arg if numeric and has more args
 // its too many args and dosent quit
 
 //if its none numeric its args required and exits
 
-static int	exit_parser(char **opt, int flag, int i)
+static int	exit_parser(char **opt, int flag, int i, t_env *envr)
 {
-	unsigned long long	exitcode;
-
-	exitcode = 0;
 	if (opt[1] && flag == 0)
 	{
-		exitcode = ft_atoi(opt[1]);
-		while (ft_isnum(opt[1][i]) == 1 && opt[1][i])
-			i++;
-		if (opt[1][i] != '\0' || exitcode < 0)
-		{
-			ft_exit_error(opt[1], 0);
-			return (-1);
-		}
+		if (ft_parser(opt[1]) == -1)
+			ft_exit_error(opt[1], 0, envr);
 	}
 	else if (flag == 1)
 	{
-		while(opt[i]) 
+		while (opt[i]) 
 			i++;
 		if (i > 2)
 		{
-			ft_exit_error(opt[1], 1);
+			ft_exit_error(opt[1], 1, NULL);
 			return (-1);
 		}
 	}
 	return (0);
 }
 
-static	void	free_me(t_env *env, t_creat *res, t_vars *var)
-{
-	t_env	*ptr;
-	t_env	*prev;
+// static	void	free_me(t_env *env, t_creat *res)
+// {
+// 	t_env	*ptr;
+// 	t_env	*prev;
 
-	ptr = env;
-	(void)res;
-	while (ptr)
-	{
-		if (ptr->free_name == 0)
-			free(ptr->name);
-		if (ptr->free_value == 0)
-			free(ptr->value);
-		prev = ptr;
-		ptr = ptr->next;
-		free(prev);
-	}
-	free(var->builtins);
-}
+// 	ptr = env;
+// 	(void)res;
+// 	while (ptr)
+// 	{
+// 		if (ptr->free_name == 0)
+// 			free(ptr->name);
+// 		if (ptr->free_value == 0)
+// 			free(ptr->value);
+// 		prev = ptr;
+// 		ptr = ptr->next;
+// 		free(prev);
+// 	}
+// }
 
-int	ft_exit(long long exitcode, t_env *env, t_creat *res, t_vars *var)
+int	ft_exit(unsigned char exitcode, t_env *env, t_creat *res)
 {
-	if (exit_parser(res->opt, 0, 0) == -1)
+	if (exit_parser(res->opt, 0, 0, env) == -1)
 		exitcode = g_exitstatus;
-	else if (exit_parser(res->opt, 1, 0) == -1)
+	else if (exit_parser(res->opt, 1, 0, env) == -1)
 		return (1);
 	else if (res->opt[1])
-		exitcode = ft_atoi(res->opt[1]);
+		exitcode = (unsigned char)ft_atoi(res->opt[1], 0, env);
 	else
 		exitcode = 0;
-	free_me(env, res, var);
 	printf("exit\n");
 	exit(exitcode);
 }

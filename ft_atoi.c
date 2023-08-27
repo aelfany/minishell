@@ -1,21 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: anchaouk <anchaouk@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/22 12:00:16 by anchaouk          #+#    #+#             */
+/*   Updated: 2023/08/23 16:29:40 by anchaouk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-// static int	ft_isoverflow(int sign)
-// {
-// 	if (sign == -1)
-// 		return (0);
-// 	else
-// 		return (-1);
-// }
-
-size_t	ft_atoi(const char *str)
+unsigned long long	ft_atoi(char *str, size_t i, t_env *envr)
 {
-	size_t		i;
 	unsigned long long	result;
 	unsigned long long	prev;
-	int			sign;
+	int					sign;
 
-	i = 0;
 	result = 0;
 	sign = 1;
 	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
@@ -32,9 +34,7 @@ size_t	ft_atoi(const char *str)
 		result = result * 10 + (str[i] - '0');
 		i++;
 	}
-	printf("atoi %llu\n", result * sign);
-	printf("atoisign %d\n", sign);
-	if (result > (9223372036854775807ULL + 1))
-		return(-1);
+	if (result > 9223372036854775807)
+		ft_exit_error(str, 0, envr);
 	return (result * sign);
 }

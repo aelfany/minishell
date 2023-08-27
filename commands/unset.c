@@ -6,7 +6,7 @@
 /*   By: anchaouk <anchaouk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 10:03:04 by anchaouk          #+#    #+#             */
-/*   Updated: 2023/08/17 22:32:31 by anchaouk         ###   ########.fr       */
+/*   Updated: 2023/08/21 23:54:35 by anchaouk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,11 @@ static void	ft_remove_others(t_env **ptr, t_env **prev)
 	free((*ptr));
 }
 
-void	ft_unset_env(t_env **envr, t_env **ptr, t_env **prev, int i, char *opt)
+void	ft_unset_env(t_env **envr, t_env **ptr, t_env **prev, char *opt)
 {
+	int	i;
+
+	i = 1;
 	while ((*ptr))
 	{
 		if (ft_strcmp(opt, (*ptr)->name) == 0)
@@ -60,7 +63,7 @@ void	ft_unset_env(t_env **envr, t_env **ptr, t_env **prev, int i, char *opt)
 	}
 }
 
-void	unset(t_env **envr, t_creat *res, int i, int d)
+void	unset(t_env **envr, t_creat *res, int d)
 {
 	t_env	*ptr;
 	t_env	*prev;
@@ -74,10 +77,9 @@ void	unset(t_env **envr, t_creat *res, int i, int d)
 			d++;
 			continue ;
 		}
-		ft_unset_env(envr, &ptr, &prev, i, res->opt[d]);
+		ft_unset_env(envr, &ptr, &prev, res->opt[d]);
 		ptr = *envr;
 		prev = *envr;
 		d++;
-		i = 1;
 	}
 }

@@ -1,50 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_tools.c                                       :+:      :+:    :+:   */
+/*   pipes_hrd_tools.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anchaouk <anchaouk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/18 17:55:04 by anchaouk          #+#    #+#             */
-/*   Updated: 2023/08/23 16:35:03 by anchaouk         ###   ########.fr       */
+/*   Created: 2023/08/21 21:52:27 by anchaouk          #+#    #+#             */
+/*   Updated: 2023/08/21 22:32:30 by anchaouk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-void	ft_free_loop(char **opt)
+static void	hrd_handler(int a)
 {
-	int	i;
-
-	i = 0;
-	while(opt[i])
-	{
-		free(opt[i]);
-		i++;
-	}
+	if (a == 2)
+		exit(1);
+	else if (a == 3)
+		return ;
 }
 
-void	ft_free_struct(t_env *env, t_creat *res)
+void	hrd_signal_reset(int pid)
 {
-	t_creat	*ptr;
-	t_env	*ptr_env;
-
-	ptr = res;
-	ptr_env = env;
-	if (ptr)
+	if (pid != 0)
 	{
-		while (ptr)
-		{
-			free(ptr);
-			ptr = ptr->next;
-		}
-	}
-	if (ptr_env)
-	{
-		while (ptr_env)
-		{
-			free(ptr);
-			ptr_env = ptr_env->next;
-		}
+		signal(SIGINT, hrd_handler);
+		signal(SIGQUIT, hrd_handler);
 	}
 }

@@ -1,43 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split2.c                                        :+:      :+:    :+:   */
+/*   split_word.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/25 17:52:27 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/25 17:52:43 by abelfany         ###   ########.fr       */
+/*   Created: 2023/05/20 17:55:49 by abelfany          #+#    #+#             */
+/*   Updated: 2023/08/25 18:00:59 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include "../minishell.h"
 
-static	char	*ft_chr(const char *str, int c)
+static	char	*ft_chr(const char *str, char *c)
 {
 	int	a;
 
 	a = 0;
 	while (str[a])
 	{
-		if (str[a] != c && str[a])
+		if (!check_wts(str[a], c) && str[a])
 			return ((char *)&str[a]);
 		a++;
 	}
 	return (0);
 }
 
-static	int	countlen(const char *str, char c)
+static	int	countlen(const char *str, char *c)
 {
 	int	x;
 
 	x = 0;
 	str = ft_chr(str, c);
-	while (str[x] != c && str[x])
+	while (!check_wts(str[x], c) && str[x])
 		x++;
 	return (x + 1);
 }
 
-static	char	**ft_creat(const char *s, int size, char c)
+static	char	**ft_creat(const char *s, int size, char *c)
 {
 	int		x;
 	int		l;
@@ -64,7 +66,7 @@ static	char	**ft_creat(const char *s, int size, char c)
 	return (tab);
 }
 
-static	char	**tab1(char const *s, int size, char c)
+static	char	**tab1(char const *s, int size, char *c)
 {
 	char	**tab;
 	int		a;
@@ -93,7 +95,7 @@ static	char	**tab1(char const *s, int size, char c)
 	return (tab);
 }
 
-char	**ft_split(char const *s, char c)
+char	**split_word(char const *s, char *c)
 {
 	char	**tab;
 	int		x;
@@ -103,11 +105,11 @@ char	**ft_split(char const *s, char c)
 	count = 0;
 	if (!s)
 		return (0);
-	if (s[0] != c && s[0] != '\0')
+	if (!check_wts(s[0], c) && s[0] != '\0')
 		count++;
 	while (s[x])
 	{
-		if (s[x] == c && s[x + 1] != c && s[x + 1] != '\0')
+		if (check_wts(s[x], c) && !check_wts(s[x + 1], c) && s[x + 1] != '\0')
 			count++;
 		x++;
 	}

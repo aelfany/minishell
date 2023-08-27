@@ -6,7 +6,7 @@
 /*   By: anchaouk <anchaouk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 11:17:26 by anchaouk          #+#    #+#             */
-/*   Updated: 2023/08/17 19:30:35 by anchaouk         ###   ########.fr       */
+/*   Updated: 2023/08/23 10:51:45 by anchaouk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ char	*ft_id_fillup(char *str)
 	i = 0;
 	d = 0;
 	str_id = malloc(1 * ft_strlen_delim(str, '=') + 1);
+	ft_malloc_protect(str_id);
 	while (str[i] != '=' && str[i])
 	{
 		if (str[i] == '+')

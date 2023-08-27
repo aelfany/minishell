@@ -6,7 +6,7 @@
 /*   By: anchaouk <anchaouk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 18:53:34 by anchaouk          #+#    #+#             */
-/*   Updated: 2023/08/18 18:15:40 by anchaouk         ###   ########.fr       */
+/*   Updated: 2023/08/23 11:32:15 by anchaouk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ static int	new_line_checker(char *str)
 	else if (str[i] == '-')
 	{
 		i++;
+		if (str[i] == '\0')
+			return (1);
 		while (str[i] && str[i] == 'n')
 			i++;
 		if (str[i] == '\0')
@@ -65,7 +67,6 @@ int	echo(char **opt)
 	if (!opt[1])
 	{
 		printf("\n");
-		puts("in\n");
 		return (0);
 	}
 	flag = echo_helper(opt, flag, 1);

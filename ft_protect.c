@@ -1,50 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_tools.c                                       :+:      :+:    :+:   */
+/*   ft_protect.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anchaouk <anchaouk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/18 17:55:04 by anchaouk          #+#    #+#             */
-/*   Updated: 2023/08/23 16:35:03 by anchaouk         ###   ########.fr       */
+/*   Created: 2023/08/23 09:43:27 by anchaouk          #+#    #+#             */
+/*   Updated: 2023/08/23 09:47:32 by anchaouk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_free_loop(char **opt)
+void	ft_malloc_protect(void *ptr)
 {
-	int	i;
-
-	i = 0;
-	while(opt[i])
+	if (!ptr)
 	{
-		free(opt[i]);
-		i++;
+		perror("minishell: ");
+		exit (-1);
 	}
 }
 
-void	ft_free_struct(t_env *env, t_creat *res)
+void	ft_systemcall_protect(int val)
 {
-	t_creat	*ptr;
-	t_env	*ptr_env;
-
-	ptr = res;
-	ptr_env = env;
-	if (ptr)
+	if (val == -1)
 	{
-		while (ptr)
-		{
-			free(ptr);
-			ptr = ptr->next;
-		}
-	}
-	if (ptr_env)
-	{
-		while (ptr_env)
-		{
-			free(ptr);
-			ptr_env = ptr_env->next;
-		}
+		perror("minishell: ");
+		exit (-1);
 	}
 }
