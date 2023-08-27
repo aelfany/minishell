@@ -6,7 +6,7 @@
 #    By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/20 11:45:24 by abelfany          #+#    #+#              #
-#    Updated: 2023/08/27 05:46:58 by abelfany         ###   ########.fr        #
+#    Updated: 2023/08/27 13:50:32 by abelfany         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ SRC =	./parsing/flager.c ./parsing/checkers.c ./parsing/cmd_and_quots.c ./parsin
 		./commands/export_tools.c ./commands/export_parsing.c ./commands/unset_parsing.c \
 		./commands/export.c ./commands/unset.c  ./commands/cd_tools.c ./commands/exit.c \
 	 	./commands/cd.c ./commands/pwd.c  ./commands/echo.c ./commands/env.c \
-		ft_atoi.c ft_itoa.c ft_split.c ft_strcpy.c free_tools.c tools.c utils.c ft_strjoin.c \
+		ft_atoi.c ft_itoa.c ./parsing/ft_split.c ft_strcpy.c free_tools.c tools.c utils.c ft_strjoin.c \
 		ft_protect.c minishell.c \
 
 S_OBJ = $(SRC:.c=.o)
