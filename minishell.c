@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 10:09:47 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/27 13:47:51 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/27 14:29:34 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,10 +153,6 @@ int	main(int ac, char **av, char **env)
 			add_history(var->line_read);
 		if(list != NULL)
 			free_list(&list);
-		// free_last_list(&res);
-		// tmp = res;
-		// print_list(res);
-		// print_list(res);
 		if (check_pipes(res) != 1)
 			ft_open_heredocs(&res, &var, envr);
 		execute_cmd(&var, &envr, &res);
@@ -170,7 +166,5 @@ int	main(int ac, char **av, char **env)
 			res = res -> next;
 			ft_free2(tmp);
 		}
-		// res = tmp;
-		// free(var->line_read);
 	}
 }

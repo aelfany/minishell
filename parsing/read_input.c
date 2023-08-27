@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 14:20:31 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/27 05:45:35 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/27 14:55:26 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,31 +41,28 @@ int	not_red(char c)
 
 int	check_error(char *str, int x)
 {
-	int	a;
-	int	sv;
-	int	flag;
+	t_var	u;
 
-	a = x;
-	flag = 0;
-	sv = 0;
-	while (str[a] && str[a] == '|')
-	{
-		sv++;
-		a++;
-	}
-	if (!str[a])
+	u.a = x;
+	u.flag = 0;
+	u.sv = 0;
+	while (str[u.a] && str[u.a++] == '|')
+		u.sv++;
+	if (!str[u.a])
 		return (1);
 	while (x--)
 		if (!is_wts(str[x]) && not_2(str[x]))
-			flag = 1;
-	a--;
-	while (str[++a])
-		if (!is_wts(str[a]) && not_2(str[a]))
+			u.flag = 1;
+	u.a--;
+	while (str[++u.a])
+	{
+		if (!is_wts(str[u.a]) && not_2(str[u.a]))
 		{
-			flag++;
+			u.flag++;
 			break ;
 		}
-	if (sv > 1 || flag < 2)
+	}
+	if (u.sv > 1 || u.flag < 2)
 		return (1);
 	return (0);
 }
@@ -96,9 +93,9 @@ void	read_string_utils(t_creat **res, char *str, int *y, t_env *envr)
 	(*y) = x;
 }
 
-t_creat		*read_string(t_creat **list, char *str, t_env *envr)
+t_creat	*read_string(t_creat **list, char *str, t_env *envr)
 {
-	t_creat *res;
+	t_creat	*res;
 	int		count;
 	int		x;
 

@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 10:09:43 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/27 05:55:39 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/27 14:38:10 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ extern int g_exitstatus;
 
 typedef struct s_var
 {
+	int	a;
+	int	sv;
     int b;
     int count;
     char flag;

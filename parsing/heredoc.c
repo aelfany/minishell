@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 16:07:09 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/27 06:28:34 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/27 14:49:13 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,17 @@ char	*qt_herdoc(char *str, int *x)
 	return (word);
 }
 
+void	check_heredoc2(char *str, int b, char **word, char *flag)
+{
+	if ((str[b] != '"' && str[b] != '\''))
+		(*word) = _remallc((*word), str[b]);
+	else
+	{
+		(*flag) = str[b];
+		(*word) = ft_strjoin_free((*word), qt_herdoc(str, &b), 1, 1);
+	}
+}
+
 void	check_heredoc(char *str, int *x, t_creat **res)
 {
 	t_var	u;
@@ -72,13 +83,7 @@ void	check_heredoc(char *str, int *x, t_creat **res)
 		if (str[u.b] == '$' && (str[u.b + 1] == '"' \
 			|| str[u.b + 1] == '\'') && u.count % 2)
 			u.b++;
-		if ((str[u.b] != '"' && str[u.b] != '\''))
-			u.word = _remallc(u.word, str[u.b]);
-		else
-		{
-			u.flag = str[u.b];
-			u.word = ft_strjoin_free(u.word, qt_herdoc(str, &u.b), 1, 1);
-		}
+		check_heredoc2(str, u.b, &u.word, &u.flag);
 		u.b++;
 	}
 	if (!u.word && u.flag != '"' && u.flag != '\'')

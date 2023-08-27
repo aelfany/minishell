@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 01:22:40 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/27 03:40:57 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/27 14:30:23 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,6 @@ int	syntax_pipes(char *str)
 	}
 	return (0);
 }
-
-
-// void	free_node(t_creat **save)
-// {
-// 	while ((*save))
-// 	{
-// 		if((*save) != NULL)
-// 			free((*save));
-// 		(*save) = (*save)-> next;
-// 	}
-// }
 
 int	ft_cmp(char *s1, char *s2)
 {

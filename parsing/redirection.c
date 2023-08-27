@@ -6,11 +6,18 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 14:19:37 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/27 06:28:34 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/27 14:42:46 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	ft_free2(t_creat *res)
+{
+	free(res -> cmd);
+	free(res -> token);
+	free(res);
+}
 
 int	skip_space(char *str)
 {
@@ -45,7 +52,8 @@ int	check_rederction(char *str, t_creat **res, char c, t_env *env)
 	while (str[u.b] && !is_wts(str[u.b]) && not_2(str[u.b]))
 	{
 		if (str[u.b] == '$')
-			u.word = ft_strjoin_free(u.word, expand_word_red(str, &u.b, env, res), 1, 1);
+			u.word = ft_strjoin_free(u.word, \
+				expand_word_red(str, &u.b, env, res), 1, 1);
 		while (not_2(str[u.b]) && str[u.b] && (str[u.b] != '"'
 				&& str[u.b] != '\'') && !is_wts(str[u.b]) && str[u.b] != '$')
 			u.word = _remallc(u.word, str[u.b++]);
@@ -71,7 +79,8 @@ void	rederction_apn(char *str, int *x, t_creat **res, t_env *env)
 	while (str[u.b] && !is_wts(str[u.b]) && not_2(str[u.b]))
 	{
 		if (str[u.b] == '$')
-			u.word = ft_strjoin_free(u.word, expand_word_red(str, &u.b, env, res), 1, 1);
+			u.word = ft_strjoin_free(u.word, \
+				expand_word_red(str, &u.b, env, res), 1, 1);
 		while (not_2(str[u.b]) && str[u.b] && (str[u.b] != '"'
 				&& str[u.b] != '\'') && !is_wts(str[u.b]) && str[u.b] != '$')
 			u.word = _remallc(u.word, str[u.b++]);

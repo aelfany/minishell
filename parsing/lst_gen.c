@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 16:42:58 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/27 03:40:45 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/27 14:34:42 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,6 @@ t_creat	*cmd_node(t_creat *res)
 	}
 	list = ft_lstnew(opt);
 	return (list);
-}
-
-void ft_free2(t_creat *res)
-{
-	free(res -> cmd);
-	free(res -> token);
-	free(res);
 }
 
 t_creat	*new_list(t_creat *res)

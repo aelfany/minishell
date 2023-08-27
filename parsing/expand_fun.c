@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 14:19:37 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/27 06:10:52 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/27 14:33:46 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*expand(t_env *env, int count, char *word)
 				while (env -> value[++a])
 					word = _remallc(word, env -> value[a]);
 			}
-			if(word == NULL)
+			if (word == NULL)
 			{
 				word = malloc(2);
 				return (word[0] = 0, word);

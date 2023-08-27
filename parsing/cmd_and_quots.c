@@ -6,7 +6,7 @@
 /*   By: abelfany <abelfany@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 23:56:05 by abelfany          #+#    #+#             */
-/*   Updated: 2023/08/27 06:28:34 by abelfany         ###   ########.fr       */
+/*   Updated: 2023/08/27 14:33:20 by abelfany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,7 @@ char	*quts(char *str, int *x, t_env *env)
 		if (str[u.b] && str[u.b] != '$')
 			u.b++;
 	}
-	(*x) = u.b;
-	return (u.word);
+	return ((*x) = u.b, u.word);
 }
 
 char	*_remallc(char *str, char c)
